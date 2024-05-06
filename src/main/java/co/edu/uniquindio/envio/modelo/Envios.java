@@ -63,6 +63,30 @@ public class Envios {
         }
         return null;
     }
+    public void actualizarPersona(String cedula,String nombre,String direccion,String ciudad,String numero,String correo)throws Exception{
+        if(cedula == null || cedula.isBlank()){
+            throw new Exception("El número de identificación es obligatorio");
+        }
+
+        if(nombre == null || nombre.isBlank()){
+            throw new Exception("El nombre es obligatorio");
+        }
+
+        if(direccion == null || direccion.isBlank()){
+            throw new Exception("La dirección es obligatoria");
+        }
+
+        if(ciudad == null || ciudad.isBlank()){
+            throw new Exception("La ciudad es obligatoria");
+        }
+        for (int perso = 0; perso < personas.size(); perso ++){
+            if(personas.get(perso).getCedula().equals(cedula)){
+                Persona persona = new Persona(cedula, nombre, direccion, ciudad, numero, correo);
+                personas.set(perso, persona);
+                break;
+            }
+        }
+    }
 }
 
 

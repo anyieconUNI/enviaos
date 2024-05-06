@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Font?>
+<?import javafx.collections.FXCollections?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="co.edu.uniquindio.envio.controlador.RegisPaquete"
+      prefHeight="400.0" prefWidth="400.0" alignment="center" spacing="30.0" >
+
+    <Label text="Paquete" >
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+
+    <GridPane alignment="CENTER" hgap="10.0" vgap="10.0">
+        <Label text="Descripción del paquete:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <TextArea fx:id="txtDesPaquete" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="200.0" prefHeight="50.0" minHeight="10.0" />
+
+        <Label text="Peso:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <TextField fx:id="txtPeso" GridPane.columnIndex="1" GridPane.rowIndex="1" minHeight="30.0" />
+
+        <Label text="Valor:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <Label fx:id="labelValor" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+        <Label text="Tipo de envio:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+<!--        <TextField fx:id="txTipoEnvio" GridPane.columnIndex="1" GridPane.rowIndex="3" minHeight="30.0" />-->
+        <ChoiceBox fx:id="selectCategory" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" >
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="EXPRESS"/>
+                    <String fx:value="ESTÁNDAR"/>
+                </FXCollections>
+            </items>
+        </ChoiceBox>
+
+    </GridPane>
+
+    <Button text="Crear" onAction="#crear" minHeight="40.0" minWidth="130.0" style="-fx-background-color: #00807a; -fx-text-fill: white" />
+
+</VBox>

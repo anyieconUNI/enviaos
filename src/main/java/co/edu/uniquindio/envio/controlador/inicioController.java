@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 public class inicioController {
 
     public void realizarPedido(ActionEvent actionEvent) {
-        navegarVentana("/registrarPedido.fxml", "Banco - Registro de Cliente");
+        navegarVentana("/emisor.fxml", "Enviaos");
     }
     public void navegarVentana(String nombreArchivoFxml, String tituloVentana) {
         try {

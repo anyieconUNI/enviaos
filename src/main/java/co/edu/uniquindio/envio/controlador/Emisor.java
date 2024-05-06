@@ -15,8 +15,7 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class RegistrarPedido implements Initializable {
-
+public class Emisor implements Initializable {
     @FXML
     public TextField txtIdentificacion;
     @FXML
@@ -58,13 +57,12 @@ public class RegistrarPedido implements Initializable {
         });
     }
 
-    public void siguiRemi(ActionEvent actionEvent) {
+    public void siguiRecep(ActionEvent actionEvent) {
         if (dataPersona){
             try {
                 envios.actualizarPersona(txtIdentificacion.getText(),txtNombre.getText(),txtDireccion.getText(),txtCiudad.getText(),txtNuTele.getText(),txtCorreo.getText());
                 System.out.println("se actualizó");
-                navegarVentana("/receptor.fxml", "Enviaos");
-                cerrarVentana();
+                navegarVentana("/regisPaquete.fxml", "Enviaos");
             }catch (Exception e){
                 System.out.println("Problemas para actualizar");
             }
@@ -73,8 +71,7 @@ public class RegistrarPedido implements Initializable {
             try {
                 envios.agregarPersonas(txtIdentificacion.getText(),txtNombre.getText(),txtDireccion.getText(),txtCiudad.getText(),txtNuTele.getText(),txtCorreo.getText());
                 System.out.println("Creado");
-                navegarVentana("/receptor.fxml", "Enviaos");
-                cerrarVentana();
+                navegarVentana("/regisPaquete.fxml", "Enviaos");
             }catch (Exception e){
                 crearAlerta(e.getMessage(), Alert.AlertType.ERROR);
             }
@@ -109,9 +106,5 @@ public class RegistrarPedido implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
-    }
-    public void cerrarVentana(){
-        Stage stage = (Stage) txtIdentificacion.getScene().getWindow();
-        stage.close();
     }
 }
