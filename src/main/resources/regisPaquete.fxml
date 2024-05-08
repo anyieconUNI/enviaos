@@ -30,7 +30,7 @@
         <Label fx:id="labelValor" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
         <Label text="Tipo de envio:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-<!--        <TextField fx:id="txTipoEnvio" GridPane.columnIndex="1" GridPane.rowIndex="3" minHeight="30.0" />-->
+
         <ChoiceBox fx:id="selectCategory" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" >
             <items>
                 <FXCollections fx:factory="observableArrayList">
@@ -39,9 +39,21 @@
                 </FXCollections>
             </items>
         </ChoiceBox>
+        <Label text="Distancia:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <TextField fx:id="txtdistancias" GridPane.columnIndex="1" GridPane.rowIndex="4" minHeight="30.0" />
 
     </GridPane>
 
-    <Button text="Crear" onAction="#crear" minHeight="40.0" minWidth="130.0" style="-fx-background-color: #00807a; -fx-text-fill: white" />
-
+    <Button text="Agregar" onAction="#agregar" minHeight="40.0" minWidth="130.0" style="-fx-background-color: linear-gradient(to right,#E68745, #E36810);-fx-text-fill: white;-fx-font-size: 15px; -fx-font-style: oblique;" />
+    <Button text="Crear envio" onAction="#crearEnvio" minHeight="40.0" minWidth="130.0" style="-fx-background-color: linear-gradient(to right,#E68745, #E36810);-fx-text-fill: white;-fx-font-size: 15px; -fx-font-style: oblique;" />
+    <Button text="calcular" onAction="#calcular" minHeight="40.0" minWidth="130.0" style="-fx-background-color: linear-gradient(to right,#E68745, #E36810);-fx-text-fill: white;-fx-font-size: 15px; -fx-font-style: oblique;" />
+    <GridPane>
+        <TableView fx:id="tablaPaquete" layoutX="22.0" layoutY="108.0"  prefHeight="100.0" prefWidth="310.0">
+            <columns >
+                <TableColumn prefWidth="75.0" text="Descripción" fx:id="descri"/>
+                <TableColumn prefWidth="75.0" text="Peso" fx:id="pesos"/>
+                <TableColumn prefWidth="75.0" text="Valor" fx:id="valores"/>
+            </columns>
+        </TableView>
+    </GridPane>
 </VBox>

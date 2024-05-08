@@ -1,4 +1,5 @@
 package co.edu.uniquindio.envio.modelo;
+import co.edu.uniquindio.envio.modelo.enums.TipoEnvio;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -6,6 +7,7 @@ import java.util.ArrayList;
 @Getter
 public class Envios {
     private final ArrayList<Persona> personas;
+    private final ArrayList<Paquete> paquetes;
     public static Envios INSTANCIA;
 
     public static Envios getInstancia(){
@@ -16,6 +18,7 @@ public class Envios {
     }
     public Envios() {
         this.personas = new ArrayList<>();
+        this.paquetes = new ArrayList<>();
         llenarDatosPrueba();
     }
 
@@ -86,6 +89,77 @@ public class Envios {
                 break;
             }
         }
+    }
+
+    public void agregarPaquete(String descripcion, float distancia,TipoEnvio tipo, float peso, float valor)throws Exception{
+        if(descripcion == null || descripcion.isBlank()){
+            throw new Exception("La descripción es obligatorio");
+        }
+//        if(peso == null || peso.isBlank()){
+//            throw new Exception("El peso es obligatorio");
+//        }
+        Paquete paquete = Paquete.builder()
+                .descripcion(descripcion)
+                .distancia(distancia)
+                .tipo(tipo)
+                .peso(peso)
+                .valor(valor)
+                .build();
+        paquetes.add(paquete);
+    }
+    private static final double PRECIO_BASE_EXPRESS = 10.00;
+    private static final double PRECIO_BASE_ESTANDAR = 7.00;
+
+    // Tarifas adicionales
+    private static final double TARIFA_ADICIONAL_ESTANDAR = 2.00;
+    private static final double TARIFA_ADICIONAL_EXPRESS = 3.00;
+    private static final double TARIFA_DISTANCIA_ESTANDAR = 2.00;
+    private static final double TARIFA_DISTANCIA_EXPRESS = 4.00;
+
+    // Descuentos y promociones
+    private static final double DESCUENTO_VOLUMEN_ESTANDAR = 0.10;
+    private static final double DESCUENTO_VOLUMEN_EXPRESS = 0.15;
+
+    // Impuestos y tasas
+    private static final double IVA = 0.07;
+
+    public double calcularPrecio(float distancia, TipoEnvio tipo, float peso, int cantidadPaquetes){
+        double precioBase;
+        double tarifaAdicional;
+        double descuentoVolumen;
+
+        // Seleccionar el precio base según el tipo de envío
+        if (tipo == TipoEnvio.EXPRESS) {
+            precioBase = PRECIO_BASE_EXPRESS;
+            tarifaAdicional = TARIFA_ADICIONAL_EXPRESS;
+            descuentoVolumen = DESCUENTO_VOLUMEN_EXPRESS;
+        } else {
+            precioBase = PRECIO_BASE_ESTANDAR;
+            tarifaAdicional = TARIFA_ADICIONAL_ESTANDAR;
+            descuentoVolumen = DESCUENTO_VOLUMEN_ESTANDAR;
+        }
+
+        // Calcular tarifa adicional por peso
+        double pesoAdicional = Math.max(0, peso - (tipo == TipoEnvio.EXPRESS ? 2.0 : 2.5));
+        double tarifaPesoAdicional = pesoAdicional * tarifaAdicional;
+
+        // Calcular tarifa adicional por distancia
+        double tarifaDistancia = (distancia > 500) ?
+                (tipo == TipoEnvio.EXPRESS ? TARIFA_DISTANCIA_EXPRESS : TARIFA_DISTANCIA_ESTANDAR) : 0.0;
+
+        // Calcular descuento por volumen
+        double descuento = (cantidadPaquetes > 10) ? descuentoVolumen * precioBase : 0.0;
+
+        // Aplicar descuento
+        double precioSubtotal = precioBase + tarifaPesoAdicional + tarifaDistancia - descuento;
+
+        // Calcular impuestos
+        double impuestos = precioSubtotal * IVA;
+
+        // Calcular precio total
+        double precioTotal = precioSubtotal + impuestos;
+
+        return precioTotal;
     }
 }
 
