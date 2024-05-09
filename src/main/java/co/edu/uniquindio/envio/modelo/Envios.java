@@ -3,22 +3,18 @@ import co.edu.uniquindio.envio.modelo.enums.TipoEnvio;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 @Getter
 public class Envios {
     private final ArrayList<Persona> personas;
     private final ArrayList<Paquete> paquetes;
-    public static Envios INSTANCIA;
+    private final  ArrayList<EnvioHistorico> envioHistory;
 
-    public static Envios getInstancia(){
-        if(INSTANCIA == null){
-            INSTANCIA = new Envios();
-        }
-        return INSTANCIA;
-    }
     public Envios() {
         this.personas = new ArrayList<>();
         this.paquetes = new ArrayList<>();
+        this.envioHistory = new ArrayList<>();
         llenarDatosPrueba();
     }
 
@@ -104,6 +100,7 @@ public class Envios {
                 .build();
         paquetes.add(paquete);
     }
+
     private static final double PRECIO_BASE_EXPRESS = 10.00;
     private static final double PRECIO_BASE_ESTANDAR = 7.00;
 
@@ -157,6 +154,37 @@ public class Envios {
         double precioTotal = precioSubtotal + impuestos;
 
         return precioTotal;
+    }
+
+    public String generarCodigo(TipoEnvio tipo){
+        String pref = null;
+        String numeroAleatorio = generarNumeroAleatorio();
+        if(tipo == TipoEnvio.EXPRESS){
+            pref ="31";
+        } else if (tipo == TipoEnvio.ESTÁNDAR) {
+            pref ="21";
+        }
+        String code = pref+numeroAleatorio;
+        String obtenerCode = obtenerCodigo(code);
+        if(obtenerCode != null){
+            numeroAleatorio = generarNumeroAleatorio();
+            code = pref+numeroAleatorio;
+        }
+        return code;
+    }
+    private String generarNumeroAleatorio() {
+        Random random = new Random();
+        int numeroAleatorio = random.nextInt(1000000);
+        return String.format("%06d", numeroAleatorio);
+    }
+    public String obtenerCodigo(String codigo){
+        String codigoEnv = null;
+        for(int enviHist = 0; enviHist < envioHistory.size(); enviHist ++){
+            if(envioHistory.get(enviHist).getCodigoEnvio().equals(codigo)){
+                codigoEnv = envioHistory.get(enviHist).getCodigoEnvio();
+            }
+        }
+        return codigoEnv;
     }
 }
 

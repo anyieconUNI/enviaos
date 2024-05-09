@@ -6,12 +6,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import org.example.servicio.Parametrizable;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class Emisor implements Initializable {
-
+public class Receptor implements Initializable, Parametrizable {
     @FXML
     public TextField txtIdentificacion;
     @FXML
@@ -28,6 +28,7 @@ public class Emisor implements Initializable {
     private final ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
 
     Boolean dataPersona = false;
+    String idEmisor;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         txtIdentificacion.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -53,13 +54,23 @@ public class Emisor implements Initializable {
         });
     }
 
-    public void siguiRemi(ActionEvent actionEvent) {
+    @Override
+    public void datosPersona(Object... parametros) {
+        if (parametros.length >= 1) {
+            // Extraer los parámetros recibidos
+            idEmisor = (String) parametros[0];
+            System.out.println(idEmisor);
+
+        } else {
+            System.out.println("No se proporcionaron suficientes parámetros");
+        }
+    }
+    public void siguiRecep(ActionEvent actionEvent) {
         if (dataPersona){
             try {
                 controladorPrincipal.actualizarPersona(txtIdentificacion.getText(),txtNombre.getText(),txtDireccion.getText(),txtCiudad.getText(),txtNuTele.getText(),txtCorreo.getText());
                 System.out.println("se actualizó");
-                controladorPrincipal.navegar("/receptor.fxml", "Enviaos",txtIdentificacion.getText());
-                controladorPrincipal.cerrarVentana(txtIdentificacion);
+                controladorPrincipal.navegar("/regisPaquete.fxml", "Enviaos",idEmisor,txtIdentificacion.getText());
             }catch (Exception e){
                 System.out.println("Problemas para actualizar");
             }
@@ -68,8 +79,7 @@ public class Emisor implements Initializable {
             try {
                 controladorPrincipal.agregarPersonas(txtIdentificacion.getText(),txtNombre.getText(),txtDireccion.getText(),txtCiudad.getText(),txtNuTele.getText(),txtCorreo.getText());
                 System.out.println("Creado");
-                controladorPrincipal.navegar("/receptor.fxml", "Enviaos",txtIdentificacion.getText());
-                controladorPrincipal.cerrarVentana(txtIdentificacion);
+                controladorPrincipal.navegar("/regisPaquete.fxml", "Enviaos",idEmisor,txtIdentificacion.getText());
             }catch (Exception e){
                 controladorPrincipal.mostrarAlerta(e.getMessage(), Alert.AlertType.ERROR);
             }

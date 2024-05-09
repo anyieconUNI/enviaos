@@ -19,4 +19,6 @@ public class EnvioHistorico {
     private List<Paquete> paquetes;
     private TipoEnvio tipo;
     private Estados estados;
+
+
 }

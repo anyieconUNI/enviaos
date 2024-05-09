@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="co.edu.uniquindio.envio.controlador.RegistrarPedido"
+      fx:controller="co.edu.uniquindio.envio.controlador.Emisor"
       prefHeight="400.0" prefWidth="400.0" alignment="center" spacing="30.0" >
 
     <Label text="Remitente (perosna que envia)" >

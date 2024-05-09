@@ -11,7 +11,7 @@
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="co.edu.uniquindio.envio.controlador.RegisPaquete"
-      prefHeight="400.0" prefWidth="400.0" alignment="center" spacing="30.0" >
+      prefHeight="600.0" prefWidth="600.0" alignment="center" spacing="30.0" >
 
     <Label text="Paquete" >
         <font>
@@ -21,7 +21,7 @@
 
     <GridPane alignment="CENTER" hgap="10.0" vgap="10.0">
         <Label fx:id="decri" text="Descripción del paquete:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-        <TextArea fx:id="txtDesPaquete" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="200.0" prefHeight="50.0" minHeight="10.0" />
+        <TextArea fx:id="txtDesPaquete" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="210.0" prefHeight="60.0" minHeight="10.0" />
 
         <Label fx:id="peso" text="Peso:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
         <TextField fx:id="txtPeso" GridPane.columnIndex="1" GridPane.rowIndex="1" minHeight="30.0" />
@@ -42,13 +42,13 @@
         <Label fx:id="labelValor" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" visible="false"/>
 
     </GridPane>
-
-    <Button text="Agregar" fx:id="agregar" onAction="#agregar" minHeight="40.0" minWidth="130.0" style="-fx-background-color: linear-gradient(to right,#E68745, #E36810);-fx-text-fill: white;-fx-font-size: 15px; -fx-font-style: oblique;" />
-    <Button text="Crear envio" onAction="#crearEnvio" minHeight="40.0" minWidth="130.0" style="-fx-background-color: linear-gradient(to right,#E68745, #E36810);-fx-text-fill: white;-fx-font-size: 15px; -fx-font-style: oblique;" />
-    <Button text="calcular" fx:id="btncalcula" onAction="#calcular" minHeight="40.0" minWidth="130.0" style="-fx-background-color: linear-gradient(to right,#E68745, #E36810);-fx-text-fill: white;-fx-font-size: 15px; -fx-font-style: oblique;" visible="false"/>
-
+    <HBox alignment="CENTER" spacing="20.0" >
+        <Button text="Agregar" fx:id="agregar" onAction="#agregar" minHeight="40.0" minWidth="130.0" style="-fx-background-color: linear-gradient(to right,#E68745, #E36810);-fx-text-fill: white;-fx-font-size: 15px; -fx-font-style: oblique;" />
+        <Button text="Crear envio" onAction="#crearEnvio" minHeight="40.0" minWidth="130.0" style="-fx-background-color: linear-gradient(to right,#E68745, #E36810);-fx-text-fill: white;-fx-font-size: 15px; -fx-font-style: oblique;" />
+        <Button text="calcular" fx:id="btncalcula" onAction="#calcular" minHeight="40.0" minWidth="130.0" style="-fx-background-color: linear-gradient(to right,#E68745, #E36810);-fx-text-fill: white;-fx-font-size: 15px; -fx-font-style: oblique;" visible="false"/>
+    </HBox>
     <GridPane>
-        <TableView fx:id="tablaPaquete" layoutX="22.0" layoutY="108.0"  prefHeight="100.0" prefWidth="310.0">
+        <TableView fx:id="tablaPaquete" layoutX="32.0" layoutY="108.0"  prefHeight="100.0" prefWidth="310.0">
             <columns >
                 <TableColumn prefWidth="75.0" text="Descripción" fx:id="descri"/>
                 <TableColumn prefWidth="75.0" text="Peso" fx:id="pesos"/>

@@ -7,11 +7,15 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import org.example.servicio.Parametrizable;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 
-
-public class RegisPaquete  {
+public class RegisPaquete implements Parametrizable {
     @FXML
     public TextArea txtDesPaquete;
     @FXML
@@ -22,7 +26,7 @@ public class RegisPaquete  {
     public ChoiceBox selectCategory;
     @FXML
     public TextField txtdistancias;
-    private final Envios envios = Envios.getInstancia();
+    private final ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
     public TableView<Paquete> tablaPaquete;
     public TableColumn<Paquete, String> descri;
     public TableColumn<Paquete, String> pesos;
@@ -37,8 +41,20 @@ public class RegisPaquete  {
     public Label decri;
     public Label peso;
     public Button agregar;
+    String idEmisor;
+    String idReceptor;
 
-
+    @Override
+    public void datosPersona(Object... parametros) {
+        if (parametros.length >= 2) {
+            // Extraer los parámetros recibidos
+            idEmisor = (String) parametros[0];
+            idReceptor = (String) parametros[1];
+            System.out.println(idEmisor+"recptor"+idReceptor);
+        } else {
+            System.out.println("No se proporcionaron suficientes parámetros");
+       }
+    }
     public void agregar(ActionEvent actionEvent) {
         float peso = Float.parseFloat(txtPeso.getText());
         float distancia = Float.parseFloat(txtdistancias.getText());
@@ -46,7 +62,7 @@ public class RegisPaquete  {
         String tipos = (String) selectCategory.getValue();
         TipoEnvio tipo = TipoEnvio.valueOf(tipos);
         try {
-            envios.agregarPaquete(txtDesPaquete.getText(),peso);
+            controladorPrincipal.agregarPaquete(txtDesPaquete.getText(),peso);
             System.out.println("agregado");
             descri.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescripcion()));
             pesos.setCellValueFactory(cellData -> new SimpleStringProperty(""+cellData.getValue().getPeso()));
@@ -70,6 +86,9 @@ public class RegisPaquete  {
         txtDesPaquete.setVisible(false);
         txtPeso.setVisible(false);
         agregar.setVisible(false);
+        String tipos = (String) selectCategory.getValue();
+        TipoEnvio tipo = TipoEnvio.valueOf(tipos);
+        String codigo =controladorPrincipal.generarCodigo(tipo);
     }
 
     public void calcular(ActionEvent actionEvent) {
@@ -78,10 +97,12 @@ public class RegisPaquete  {
 //            float distancia = Float.parseFloat(txtdistancias.getText());
 //            String tipos = (String) selectCategory.getValue();
 //            TipoEnvio tipo = TipoEnvio.valueOf(tipos);
-//            float precio = (float) envios.calcularPrecio(distancia,tipo,peso,2);
+//            float precio = (float) controladorPrincipal.calcularPrecio(distancia,tipo,peso,2);
 //            labelValor.setText(String.valueOf(precio));
 //        } catch (Exception e) {
 //            System.out.println("mal");
 //        }
     }
+
+
 }
