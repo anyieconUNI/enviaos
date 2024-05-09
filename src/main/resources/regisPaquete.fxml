@@ -20,18 +20,17 @@
     </Label>
 
     <GridPane alignment="CENTER" hgap="10.0" vgap="10.0">
-        <Label text="Descripción del paquete:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <Label fx:id="decri" text="Descripción del paquete:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
         <TextArea fx:id="txtDesPaquete" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="200.0" prefHeight="50.0" minHeight="10.0" />
 
-        <Label text="Peso:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <Label fx:id="peso" text="Peso:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
         <TextField fx:id="txtPeso" GridPane.columnIndex="1" GridPane.rowIndex="1" minHeight="30.0" />
 
-        <Label text="Valor:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-        <Label fx:id="labelValor" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Label fx:id="diste" text="Distancia:" GridPane.columnIndex="0" GridPane.rowIndex="4" visible="false" />
+        <TextField fx:id="txtdistancias" GridPane.columnIndex="1" GridPane.rowIndex="4" minHeight="30.0" visible="false" />
+        <Label fx:id="type" text="Tipo de envio:" GridPane.columnIndex="0" GridPane.rowIndex="3" visible="false"/>
 
-        <Label text="Tipo de envio:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-
-        <ChoiceBox fx:id="selectCategory" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" >
+        <ChoiceBox fx:id="selectCategory" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" visible="false" >
             <items>
                 <FXCollections fx:factory="observableArrayList">
                     <String fx:value="EXPRESS"/>
@@ -39,14 +38,15 @@
                 </FXCollections>
             </items>
         </ChoiceBox>
-        <Label text="Distancia:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-        <TextField fx:id="txtdistancias" GridPane.columnIndex="1" GridPane.rowIndex="4" minHeight="30.0" />
+        <Label text="Valor:" fx:id="val" GridPane.columnIndex="0" GridPane.rowIndex="2" visible="false"/>
+        <Label fx:id="labelValor" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" visible="false"/>
 
     </GridPane>
 
-    <Button text="Agregar" onAction="#agregar" minHeight="40.0" minWidth="130.0" style="-fx-background-color: linear-gradient(to right,#E68745, #E36810);-fx-text-fill: white;-fx-font-size: 15px; -fx-font-style: oblique;" />
+    <Button text="Agregar" fx:id="agregar" onAction="#agregar" minHeight="40.0" minWidth="130.0" style="-fx-background-color: linear-gradient(to right,#E68745, #E36810);-fx-text-fill: white;-fx-font-size: 15px; -fx-font-style: oblique;" />
     <Button text="Crear envio" onAction="#crearEnvio" minHeight="40.0" minWidth="130.0" style="-fx-background-color: linear-gradient(to right,#E68745, #E36810);-fx-text-fill: white;-fx-font-size: 15px; -fx-font-style: oblique;" />
-    <Button text="calcular" onAction="#calcular" minHeight="40.0" minWidth="130.0" style="-fx-background-color: linear-gradient(to right,#E68745, #E36810);-fx-text-fill: white;-fx-font-size: 15px; -fx-font-style: oblique;" />
+    <Button text="calcular" fx:id="btncalcula" onAction="#calcular" minHeight="40.0" minWidth="130.0" style="-fx-background-color: linear-gradient(to right,#E68745, #E36810);-fx-text-fill: white;-fx-font-size: 15px; -fx-font-style: oblique;" visible="false"/>
+
     <GridPane>
         <TableView fx:id="tablaPaquete" layoutX="22.0" layoutY="108.0"  prefHeight="100.0" prefWidth="310.0">
             <columns >

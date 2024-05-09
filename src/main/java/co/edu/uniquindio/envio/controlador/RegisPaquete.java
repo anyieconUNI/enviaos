@@ -27,6 +27,16 @@ public class RegisPaquete  {
     public TableColumn<Paquete, String> descri;
     public TableColumn<Paquete, String> pesos;
     public TableColumn<Paquete, String> valores;
+    @FXML
+    public Label diste;
+    @FXML
+    public Label type;
+    @FXML
+    public Label val;
+    public Button btncalcula;
+    public Label decri;
+    public Label peso;
+    public Button agregar;
 
 
     public void agregar(ActionEvent actionEvent) {
@@ -36,30 +46,42 @@ public class RegisPaquete  {
         String tipos = (String) selectCategory.getValue();
         TipoEnvio tipo = TipoEnvio.valueOf(tipos);
         try {
-            envios.agregarPaquete(txtDesPaquete.getText(),distancia,tipo,peso,valor);
+            envios.agregarPaquete(txtDesPaquete.getText(),peso);
             System.out.println("agregado");
             descri.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescripcion()));
             pesos.setCellValueFactory(cellData -> new SimpleStringProperty(""+cellData.getValue().getPeso()));
-            valores.setCellValueFactory(cellData -> new SimpleStringProperty(""+cellData.getValue().getValor()));
-            tablaPaquete.getItems().add(new Paquete(txtDesPaquete.getText(), distancia, tipo, peso, valor));
+//            valores.setCellValueFactory(cellData -> new SimpleStringProperty(""+cellData.getValue().getValor()));
+            tablaPaquete.getItems().add(new Paquete(txtDesPaquete.getText(), peso));
         }catch (Exception e) {
             System.out.println("no agregado");
         }
     }
 
     public void crearEnvio(ActionEvent actionEvent) {
+        labelValor.setVisible(true);
+        diste.setVisible(true);
+        type.setVisible(true);
+        val.setVisible(true);
+        selectCategory.setVisible(true);
+        txtdistancias.setVisible(true);
+        btncalcula.setVisible(true);
+        decri.setVisible(false);
+        peso.setVisible(false);
+        txtDesPaquete.setVisible(false);
+        txtPeso.setVisible(false);
+        agregar.setVisible(false);
     }
 
     public void calcular(ActionEvent actionEvent) {
-        try {
-            float peso = Float.parseFloat(txtPeso.getText());
-            float distancia = Float.parseFloat(txtdistancias.getText());
-            String tipos = (String) selectCategory.getValue();
-            TipoEnvio tipo = TipoEnvio.valueOf(tipos);
-            float precio = (float) envios.calcularPrecio(distancia,tipo,peso,2);
-            labelValor.setText(String.valueOf(precio));
-        } catch (Exception e) {
-            System.out.println("mal");
-        }
+//        try {
+//            float peso = Float.parseFloat(txtPeso.getText());
+//            float distancia = Float.parseFloat(txtdistancias.getText());
+//            String tipos = (String) selectCategory.getValue();
+//            TipoEnvio tipo = TipoEnvio.valueOf(tipos);
+//            float precio = (float) envios.calcularPrecio(distancia,tipo,peso,2);
+//            labelValor.setText(String.valueOf(precio));
+//        } catch (Exception e) {
+//            System.out.println("mal");
+//        }
     }
 }

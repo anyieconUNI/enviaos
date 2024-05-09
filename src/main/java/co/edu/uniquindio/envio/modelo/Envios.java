@@ -91,7 +91,7 @@ public class Envios {
         }
     }
 
-    public void agregarPaquete(String descripcion, float distancia,TipoEnvio tipo, float peso, float valor)throws Exception{
+    public void agregarPaquete(String descripcion,float peso)throws Exception{
         if(descripcion == null || descripcion.isBlank()){
             throw new Exception("La descripción es obligatorio");
         }
@@ -100,10 +100,7 @@ public class Envios {
 //        }
         Paquete paquete = Paquete.builder()
                 .descripcion(descripcion)
-                .distancia(distancia)
-                .tipo(tipo)
                 .peso(peso)
-                .valor(valor)
                 .build();
         paquetes.add(paquete);
     }
