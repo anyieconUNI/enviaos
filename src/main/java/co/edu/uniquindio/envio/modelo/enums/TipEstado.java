@@ -1,5 +1,5 @@
 package co.edu.uniquindio.envio.modelo.enums;
 
-public enum Estado {
+public enum TipEstado {
     CREADO, ENVIADO, EN_TRANSITO, ENTREGADO
 }

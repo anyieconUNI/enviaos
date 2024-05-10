@@ -5,9 +5,11 @@ import co.edu.uniquindio.envio.modelo.Estados;
 import co.edu.uniquindio.envio.modelo.Factura;
 import co.edu.uniquindio.envio.modelo.Paquete;
 import co.edu.uniquindio.envio.modelo.Persona;
+import co.edu.uniquindio.envio.modelo.enums.TipEstado;
 import co.edu.uniquindio.envio.modelo.enums.TipoEnvio;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Interfaz que define los servicios que se pueden realizar en el hotel
@@ -20,12 +22,8 @@ public interface EnvioServicio {
 
     String generarCodigo(TipoEnvio tipo);
 
-    double calcularPrecio(float distancia, TipoEnvio tipo, float peso, int cantidadPaquetes);
-//    double calcularPrecio(float distancia, TipoEnvio tipo, float peso, int cantidadPaquetes);
+    double calcularPrecio(float distancia, TipoEnvio tipo, float peso, int cantidadPaquetes) throws Exception;
+    EnvioHistorico crearHistorial(String codigoEnvio, String remitente, String destinatario, List<Paquete> paquetes, TipoEnvio tipo, TipEstado estados, LocalDate fecha,float distancia,float valor)throws Exception;
 
-//  recibir sms
-//    public interface Notificacion {
-//        void enviarNotificacion();
-//    }
 
 }

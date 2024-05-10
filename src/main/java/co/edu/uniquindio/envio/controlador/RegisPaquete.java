@@ -1,18 +1,17 @@
 package co.edu.uniquindio.envio.controlador;
 
-import co.edu.uniquindio.envio.modelo.Envios;
 import co.edu.uniquindio.envio.modelo.Paquete;
+import co.edu.uniquindio.envio.modelo.enums.TipEstado;
 import co.edu.uniquindio.envio.modelo.enums.TipoEnvio;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import org.example.servicio.Parametrizable;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.time.LocalDate;
 
 
 public class RegisPaquete implements Parametrizable {
@@ -23,7 +22,7 @@ public class RegisPaquete implements Parametrizable {
     @FXML
     public Label labelValor;
     @FXML
-    public ChoiceBox selectCategory;
+    public ChoiceBox selectCategorys;
     @FXML
     public TextField txtdistancias;
     private final ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
@@ -57,10 +56,6 @@ public class RegisPaquete implements Parametrizable {
     }
     public void agregar(ActionEvent actionEvent) {
         float peso = Float.parseFloat(txtPeso.getText());
-        float distancia = Float.parseFloat(txtdistancias.getText());
-        float valor = Float.parseFloat(labelValor.getText());
-        String tipos = (String) selectCategory.getValue();
-        TipoEnvio tipo = TipoEnvio.valueOf(tipos);
         try {
             controladorPrincipal.agregarPaquete(txtDesPaquete.getText(),peso);
             System.out.println("agregado");
@@ -68,41 +63,63 @@ public class RegisPaquete implements Parametrizable {
             pesos.setCellValueFactory(cellData -> new SimpleStringProperty(""+cellData.getValue().getPeso()));
 //            valores.setCellValueFactory(cellData -> new SimpleStringProperty(""+cellData.getValue().getValor()));
             tablaPaquete.getItems().add(new Paquete(txtDesPaquete.getText(), peso));
-        }catch (Exception e) {
-            System.out.println("no agregado");
+            txtDesPaquete.setText("");
+            txtPeso.setText("");
+        } catch (NumberFormatException e) {
+            controladorPrincipal.mostrarAlerta("El peso debe ser un número válido.", Alert.AlertType.ERROR);
+        } catch (Exception e) {
+            controladorPrincipal.mostrarAlerta(e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
-    public void crearEnvio(ActionEvent actionEvent) {
-        labelValor.setVisible(true);
-        diste.setVisible(true);
-        type.setVisible(true);
-        val.setVisible(true);
-        selectCategory.setVisible(true);
-        txtdistancias.setVisible(true);
-        btncalcula.setVisible(true);
-//        decri.setVisible(false);
-//        peso.setVisible(false);
-//        txtDesPaquete.setVisible(false);
-//        txtPeso.setVisible(false);
-//        agregar.setVisible(false);
-        String tipos = (String) selectCategory.getValue();
-        TipoEnvio tipo = TipoEnvio.valueOf(tipos);
-        String codigo =controladorPrincipal.generarCodigo(tipo);
-    }
-
+    boolean data = false;
     public void calcular(ActionEvent actionEvent) {
-//        try {
-//            float peso = Float.parseFloat(txtPeso.getText());
-//            float distancia = Float.parseFloat(txtdistancias.getText());
-//            String tipos = (String) selectCategory.getValue();
-//            TipoEnvio tipo = TipoEnvio.valueOf(tipos);
-//            float precio = (float) controladorPrincipal.calcularPrecio(distancia,tipo,peso,2);
-//            labelValor.setText(String.valueOf(precio));
-//        } catch (Exception e) {
-//            System.out.println("mal");
-//        }
+        try {
+            float distancia = Float.parseFloat(txtdistancias.getText());
+            String tipos = (String) selectCategorys.getValue();
+            TipoEnvio tipo = TipoEnvio.valueOf(tipos);
+            int cantidadPaquetes = tablaPaquete.getItems().size();
+            float pesoTotal = 0;
+            for (Paquete paquete : tablaPaquete.getItems()) {
+                pesoTotal += paquete.getPeso();
+            }
+            System.out.println(pesoTotal+"  "+"  "+cantidadPaquetes);
+            float precio = (float) controladorPrincipal.calcularPrecio(distancia,tipo,pesoTotal,cantidadPaquetes);
+            System.out.println(precio);
+            data=true;
+            labelValor.setText(String.valueOf(precio));
+        } catch (Exception e) {
+            controladorPrincipal.mostrarAlerta(e.getMessage(), Alert.AlertType.ERROR);
+        }
     }
-
+    public void crearEnvio(ActionEvent actionEvent) {
+        if (tablaPaquete.getItems().isEmpty()) {
+            controladorPrincipal.mostrarAlerta("Primero se deben registrar paquetes.", Alert.AlertType.ERROR);
+        }
+        else{
+            selectCategorys.setDisable(false);
+            txtdistancias.setEditable(true);
+            btncalcula.setDisable(false);
+            txtDesPaquete.setEditable(false);
+            txtPeso.setEditable(false);
+            agregar.setDisable(true);
+            if(data){
+                String tipos = (String) selectCategorys.getValue();
+                TipoEnvio tipo = TipoEnvio.valueOf(tipos);
+                LocalDate fechaActual = LocalDate.now();
+                String codigo =controladorPrincipal.generarCodigo(tipo);
+                float distancia = Float.parseFloat(txtdistancias.getText());
+                float valor = Float.parseFloat(labelValor.getText());
+                    ObservableList<Paquete> listaPaquetes = tablaPaquete.getItems();
+                    System.out.println(listaPaquetes);
+                    controladorPrincipal.mostrarAlerta("Envio Creado", Alert.AlertType.CONFIRMATION);
+                try {
+                    controladorPrincipal.crearHistorial(codigo,idEmisor,idReceptor,listaPaquetes,tipo,TipEstado.CREADO,fechaActual,distancia,valor);
+                }catch (Exception e) {
+                    controladorPrincipal.mostrarAlerta(e.getMessage(), Alert.AlertType.ERROR);
+                }
+            }
+        }
+    }
 
 }

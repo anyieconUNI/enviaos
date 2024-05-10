@@ -9,14 +9,8 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="co.edu.uniquindio.envio.controlador.Seguimiento">
    <children>
-      <ChoiceBox layoutX="14.0" layoutY="63.0" prefWidth="150.0">
-           <items>
-               <FXCollections fx:factory="observableArrayList">
-                   <String fx:value="EXPRESS"/>
-                   <String fx:value="ESTÁNDAR"/>
-               </FXCollections>
-           </items>
-      </ChoiceBox>
+
+       <DatePicker layoutX="14.0" layoutY="63.0" prefWidth="150.0" fx:id="dataFecha"/>
 
       <ChoiceBox layoutX="180.0" layoutY="63.0" prefWidth="150.0" >
           <items>
@@ -38,9 +32,9 @@
                <Font size="18.0" />
            </font>
        </Label>
-      <TableView layoutX="22.0" layoutY="108.0" prefHeight="200.0" prefWidth="510.0">
+      <TableView layoutX="22.0" layoutY="108.0" prefHeight="200.0" prefWidth="510.0" fx:id="tablaSegui">
         <columns>
-          <TableColumn prefWidth="75.0" text="Codigo" />
+          <TableColumn prefWidth="75.0" text="Codigo" fx:id="code" />
           <TableColumn prefWidth="75.0" text="Fecha " />
             <TableColumn prefWidth="75.0" text="Estado " />
             <TableColumn prefWidth="75.0" text="Ciudad" />

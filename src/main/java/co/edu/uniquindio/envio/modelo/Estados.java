@@ -1,6 +1,6 @@
 package co.edu.uniquindio.envio.modelo;
 
-import co.edu.uniquindio.envio.modelo.enums.Estado;
+import co.edu.uniquindio.envio.modelo.enums.TipEstado;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +14,6 @@ import lombok.Setter;
 public class Estados {
     private LocalDate fecha;
     private String descripcion;
-    private Estado estado;
+    private TipEstado estado;
 
 }

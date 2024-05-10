@@ -1,7 +1,6 @@
 package co.edu.uniquindio.envio.controlador;
-import co.edu.uniquindio.envio.modelo.Envios;
-import co.edu.uniquindio.envio.modelo.Paquete;
-import co.edu.uniquindio.envio.modelo.Persona;
+import co.edu.uniquindio.envio.modelo.*;
+import co.edu.uniquindio.envio.modelo.enums.TipEstado;
 import co.edu.uniquindio.envio.modelo.enums.TipoEnvio;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -12,6 +11,9 @@ import javafx.stage.Stage;
 import lombok.Getter;
 import org.example.servicio.EnvioServicio;
 import org.example.servicio.Parametrizable;
+
+import java.time.LocalDate;
+import java.util.List;
 
 
 /**
@@ -109,7 +111,14 @@ public class ControladorPrincipal implements EnvioServicio {
     }
 
     @Override
-    public double calcularPrecio(float distancia, TipoEnvio tipo, float peso, int cantidadPaquetes) {
-        return 0;
+    public double calcularPrecio(float distancia, TipoEnvio tipo, float peso, int cantidadPaquetes)throws Exception {
+        return envios.calcularPrecio(distancia,tipo,peso,cantidadPaquetes);
     }
+
+    @Override
+    public EnvioHistorico crearHistorial(String codigoEnvio, String remitente, String destinatario, List<Paquete> paquetes, TipoEnvio tipo, TipEstado estados, LocalDate fecha,float distancia,float valor) throws Exception {
+        return envios.crearHistorial(codigoEnvio,remitente,destinatario,paquetes,tipo,estados, fecha,distancia,valor);
+    }
+
+
 }

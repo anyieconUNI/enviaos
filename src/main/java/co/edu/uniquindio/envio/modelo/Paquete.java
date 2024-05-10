@@ -1,6 +1,5 @@
 package co.edu.uniquindio.envio.modelo;
 
-import co.edu.uniquindio.envio.modelo.enums.Estado;
 import lombok.*;
 
 @AllArgsConstructor

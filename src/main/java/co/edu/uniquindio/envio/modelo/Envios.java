@@ -1,9 +1,12 @@
 package co.edu.uniquindio.envio.modelo;
+import co.edu.uniquindio.envio.modelo.enums.TipEstado;
 import co.edu.uniquindio.envio.modelo.enums.TipoEnvio;
 import lombok.Getter;
 import org.example.servicio.EnvioServicio;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @Getter
@@ -94,9 +97,9 @@ public class Envios implements EnvioServicio {
         if(descripcion == null || descripcion.isBlank()){
             throw new Exception("La descripción es obligatorio");
         }
-//        if(peso == null || peso.isBlank()){
-//            throw new Exception("El peso es obligatorio");
-//        }
+        if(peso == 0.0){
+            throw new Exception("El peso es obligatorio");
+        }
         Paquete paquete = Paquete.builder()
                 .descripcion(descripcion)
                 .peso(peso)
@@ -122,7 +125,8 @@ public class Envios implements EnvioServicio {
     // Impuestos y tasas
     private static final double IVA = 0.07;
 
-    public double calcularPrecio(float distancia, TipoEnvio tipo, float peso, int cantidadPaquetes){
+    public double calcularPrecio(float distancia, TipoEnvio tipo, float peso, int cantidadPaquetes) throws Exception {
+        alerta(distancia,tipo);
         double precioBase;
         double tarifaAdicional;
         double descuentoVolumen;
@@ -160,7 +164,11 @@ public class Envios implements EnvioServicio {
 
         return precioTotal;
     }
-
+    public void alerta(float distancia, TipoEnvio tipo)throws Exception{
+        if (distancia == 0.0|| tipo == null ) {
+            throw new Exception("Todos los parámetros son obligatorios");
+        }
+    }
     public String generarCodigo(TipoEnvio tipo){
         String pref = null;
         String numeroAleatorio = generarNumeroAleatorio();
@@ -190,6 +198,22 @@ public class Envios implements EnvioServicio {
             }
         }
         return codigoEnv;
+    }
+    public EnvioHistorico crearHistorial(String codigoEnvio, String remitente, String destinatario, List<Paquete> paquetes,TipoEnvio tipo, TipEstado estados, LocalDate fecha,float distancia,float valor)throws Exception{
+        if(tipo ==null){
+            throw new Exception("El Tipo es obligatorio");
+        }
+        EnvioHistorico envios =EnvioHistorico.builder()
+                .codigoEnvio(codigoEnvio)
+                .remitente(remitente)
+                .destinatario(destinatario)
+                .paquetes(paquetes)
+                .tipo(tipo)
+                .estados(estados)
+                .fecha(fecha)
+                .build();
+        envioHistory.add(envios);
+        return envios;
     }
 }
 
