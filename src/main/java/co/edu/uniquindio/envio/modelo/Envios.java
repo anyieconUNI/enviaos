@@ -1,12 +1,13 @@
 package co.edu.uniquindio.envio.modelo;
 import co.edu.uniquindio.envio.modelo.enums.TipoEnvio;
 import lombok.Getter;
+import org.example.servicio.EnvioServicio;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 @Getter
-public class Envios {
+public class Envios implements EnvioServicio {
     private final ArrayList<Persona> personas;
     private final ArrayList<Paquete> paquetes;
     private final  ArrayList<EnvioHistorico> envioHistory;
@@ -26,7 +27,7 @@ public class Envios {
         }
     }
 
-    public void agregarPersonas(String cedula,String nombre,String direccion,String ciudad,String numero,String correo)throws Exception{
+    public Persona agregarPersonas(String cedula,String nombre,String direccion,String ciudad,String numero,String correo)throws Exception{
         if(cedula == null || cedula.isBlank()){
             throw new Exception("El número de identificación es obligatorio");
         }
@@ -53,6 +54,8 @@ public class Envios {
                 .build();
 
         personas.add(persona);
+
+        return persona;
     }
     public Persona obtenerPersonas(String cedula){
         for(int perso = 0; perso < personas.size(); perso ++){
@@ -87,7 +90,7 @@ public class Envios {
         }
     }
 
-    public void agregarPaquete(String descripcion,float peso)throws Exception{
+    public Paquete agregarPaquete(String descripcion,float peso)throws Exception{
         if(descripcion == null || descripcion.isBlank()){
             throw new Exception("La descripción es obligatorio");
         }
@@ -99,6 +102,8 @@ public class Envios {
                 .peso(peso)
                 .build();
         paquetes.add(paquete);
+
+        return paquete;
     }
 
     private static final double PRECIO_BASE_EXPRESS = 10.00;

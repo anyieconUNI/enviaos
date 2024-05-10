@@ -81,11 +81,11 @@ public class RegisPaquete implements Parametrizable {
         selectCategory.setVisible(true);
         txtdistancias.setVisible(true);
         btncalcula.setVisible(true);
-        decri.setVisible(false);
-        peso.setVisible(false);
-        txtDesPaquete.setVisible(false);
-        txtPeso.setVisible(false);
-        agregar.setVisible(false);
+//        decri.setVisible(false);
+//        peso.setVisible(false);
+//        txtDesPaquete.setVisible(false);
+//        txtPeso.setVisible(false);
+//        agregar.setVisible(false);
         String tipos = (String) selectCategory.getValue();
         TipoEnvio tipo = TipoEnvio.valueOf(tipos);
         String codigo =controladorPrincipal.generarCodigo(tipo);

@@ -32,7 +32,12 @@ public class Receptor implements Initializable, Parametrizable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         txtIdentificacion.textProperty().addListener((observable, oldValue, newValue) -> {
-            Persona persona = controladorPrincipal.obtenerPersonas(txtIdentificacion.getText());
+            Persona persona = null;
+            try {
+                persona = controladorPrincipal.obtenerPersonas(txtIdentificacion.getText());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
             if(persona != null){
                 System.out.println("El valor de txtIdentificacion ha cambiado a: " + persona.getCedula());
                 txtNombre.setText(persona.getNombre());

@@ -35,36 +35,6 @@ public class ControladorPrincipal implements EnvioServicio {
         return INSTANCIA;
     }
 
-    @Override
-    public Persona agregarPersonas(String cedula, String nombre, String direccion, String ciudad, String numero, String correo) {
-        return null;
-    }
-
-    @Override
-    public Persona obtenerPersonas(String cedula) {
-        return envios.obtenerPersonas(cedula);
-    }
-
-    @Override
-    public Persona actualizarPersona(String cedula, String nombre, String direccion, String ciudad, String numero, String correo) {
-        return null;
-    }
-
-    @Override
-    public Paquete agregarPaquete(String descripcion, float peso) {
-        return null;
-    }
-
-    @Override
-    public String generarCodigo(TipoEnvio tipo) {
-        try {
-            return envios.generarCodigo(tipo);
-        } catch (Exception e) {
-            // Manejar la excepción aquí, como mostrar un mensaje de error
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     public void mostrarAlerta(String mensaje, Alert.AlertType tipo){
         Alert alert = new Alert(tipo);
@@ -113,5 +83,33 @@ public class ControladorPrincipal implements EnvioServicio {
     }
 
 
+    @Override
+    public Persona agregarPersonas(String cedula, String nombre, String direccion, String ciudad, String numero, String correo) throws Exception {
+        return envios.agregarPersonas(cedula, nombre, direccion, ciudad, numero, correo);
+    }
 
+    @Override
+    public Persona obtenerPersonas(String cedula) throws Exception {
+        return envios.obtenerPersonas(cedula);
+    }
+
+    @Override
+    public void actualizarPersona(String cedula, String nombre, String direccion, String ciudad, String numero, String correo) throws Exception {
+        envios.actualizarPersona(cedula, nombre, direccion, ciudad, numero, correo);
+    }
+
+    @Override
+    public Paquete agregarPaquete(String descripcion, float peso) throws Exception {
+        return envios.agregarPaquete(descripcion, peso);
+    }
+
+    @Override
+    public String generarCodigo(TipoEnvio tipo) {
+        return envios.generarCodigo(tipo);
+    }
+
+    @Override
+    public double calcularPrecio(float distancia, TipoEnvio tipo, float peso, int cantidadPaquetes) {
+        return 0;
+    }
 }
