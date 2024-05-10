@@ -44,8 +44,19 @@
                     </FXCollections>
                 </items>
             </ChoiceBox>
-        <Label text="Valor:" fx:id="val" GridPane.columnIndex="0" GridPane.rowIndex="2"  />
-        <Label fx:id="labelValor" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2"  />
+            <Label  text="Ciudad:" GridPane.columnIndex="0" GridPane.rowIndex="2"  />
+            <ChoiceBox fx:id="selectCiudad" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2"  disable="true" >
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="ARMENIA"/>
+                        <String fx:value="PEREIRA"/>
+                        <String fx:value="MANIZALES"/>
+                    </FXCollections>
+                </items>
+            </ChoiceBox>
+
+            <Label text="Valor:" fx:id="val" GridPane.columnIndex="0" GridPane.rowIndex="3"  />
+        <Label fx:id="labelValor" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3"  />
 
 
         </GridPane>

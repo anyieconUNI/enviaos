@@ -1,6 +1,7 @@
 package co.edu.uniquindio.envio.controlador;
 
 import co.edu.uniquindio.envio.modelo.Paquete;
+import co.edu.uniquindio.envio.modelo.enums.Ciudad;
 import co.edu.uniquindio.envio.modelo.enums.TipEstado;
 import co.edu.uniquindio.envio.modelo.enums.TipoEnvio;
 import javafx.beans.property.SimpleStringProperty;
@@ -40,6 +41,7 @@ public class RegisPaquete implements Parametrizable {
     public Label decri;
     public Label peso;
     public Button agregar;
+    public ChoiceBox selectCiudad;
     String idEmisor;
     String idReceptor;
 
@@ -98,6 +100,7 @@ public class RegisPaquete implements Parametrizable {
         }
         else{
             selectCategorys.setDisable(false);
+            selectCiudad.setDisable(false);
             txtdistancias.setEditable(true);
             btncalcula.setDisable(false);
             txtDesPaquete.setEditable(false);
@@ -106,6 +109,8 @@ public class RegisPaquete implements Parametrizable {
             if(data){
                 String tipos = (String) selectCategorys.getValue();
                 TipoEnvio tipo = TipoEnvio.valueOf(tipos);
+                String ciudades = (String) selectCiudad.getValue();
+                Ciudad ciudad = Ciudad.valueOf(ciudades);
                 LocalDate fechaActual = LocalDate.now();
                 String codigo =controladorPrincipal.generarCodigo(tipo);
                 float distancia = Float.parseFloat(txtdistancias.getText());
@@ -114,7 +119,8 @@ public class RegisPaquete implements Parametrizable {
                     System.out.println(listaPaquetes);
                     controladorPrincipal.mostrarAlerta("Envio Creado", Alert.AlertType.CONFIRMATION);
                 try {
-                    controladorPrincipal.crearHistorial(codigo,idEmisor,idReceptor,listaPaquetes,tipo,TipEstado.CREADO,fechaActual,distancia,valor);
+                    controladorPrincipal.crearHistorial(codigo,idEmisor,idReceptor,listaPaquetes,tipo,ciudad,TipEstado.CREADO,fechaActual,distancia,valor);
+                    System.out.println(controladorPrincipal.obtenerHistorico());
                 }catch (Exception e) {
                     controladorPrincipal.mostrarAlerta(e.getMessage(), Alert.AlertType.ERROR);
                 }

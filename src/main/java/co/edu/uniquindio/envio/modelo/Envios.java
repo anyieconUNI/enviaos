@@ -1,4 +1,5 @@
 package co.edu.uniquindio.envio.modelo;
+import co.edu.uniquindio.envio.modelo.enums.Ciudad;
 import co.edu.uniquindio.envio.modelo.enums.TipEstado;
 import co.edu.uniquindio.envio.modelo.enums.TipoEnvio;
 import lombok.Getter;
@@ -65,6 +66,12 @@ public class Envios implements EnvioServicio {
             if(personas.get(perso).getCedula().equals(cedula)){
                 return personas.get(perso);
             }
+        }
+        return null;
+    }
+    public EnvioHistorico obtenerHistorico(){
+        for (int historys =0; historys < envioHistory.size(); historys ++){
+            return envioHistory.get(historys);
         }
         return null;
     }
@@ -199,7 +206,7 @@ public class Envios implements EnvioServicio {
         }
         return codigoEnv;
     }
-    public EnvioHistorico crearHistorial(String codigoEnvio, String remitente, String destinatario, List<Paquete> paquetes,TipoEnvio tipo, TipEstado estados, LocalDate fecha,float distancia,float valor)throws Exception{
+    public EnvioHistorico crearHistorial(String codigoEnvio, String remitente, String destinatario, List<Paquete> paquetes, TipoEnvio tipo, Ciudad ciudad, TipEstado estados, LocalDate fecha, float distancia, float valor)throws Exception{
         if(tipo ==null){
             throw new Exception("El Tipo es obligatorio");
         }
@@ -208,6 +215,7 @@ public class Envios implements EnvioServicio {
                 .remitente(remitente)
                 .destinatario(destinatario)
                 .paquetes(paquetes)
+                .ciudad(ciudad)
                 .tipo(tipo)
                 .estados(estados)
                 .fecha(fecha)
@@ -215,6 +223,21 @@ public class Envios implements EnvioServicio {
         envioHistory.add(envios);
         return envios;
     }
+    public List<EnvioHistorico> filtrarDatos(LocalDate fecha, TipoEnvio tipo, TipEstado estado) {
+        List<EnvioHistorico> enviosFiltrados = new ArrayList<>();
+        for (EnvioHistorico envio : envioHistory) {
+            if (envio.getFecha().equals(fecha)) {
+                if (envio.getTipo() == tipo) {
+                    if (envio.getEstados() == estado) {
+                        enviosFiltrados.add(envio);
+                    }
+                }
+            }
+        }
+        return enviosFiltrados;
+    }
+
+
 }
 
 

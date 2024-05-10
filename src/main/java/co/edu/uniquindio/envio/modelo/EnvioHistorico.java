@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 
+import co.edu.uniquindio.envio.modelo.enums.Ciudad;
 import co.edu.uniquindio.envio.modelo.enums.TipEstado;
 import co.edu.uniquindio.envio.modelo.enums.TipoEnvio;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,7 @@ public class EnvioHistorico {
     private String destinatario;
     private List<Paquete> paquetes;
     private TipoEnvio tipo;
+    private Ciudad ciudad;
     private TipEstado estados;
     private LocalDate fecha;
     private  float distancia;

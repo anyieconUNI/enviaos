@@ -1,5 +1,6 @@
 package co.edu.uniquindio.envio.controlador;
 import co.edu.uniquindio.envio.modelo.*;
+import co.edu.uniquindio.envio.modelo.enums.Ciudad;
 import co.edu.uniquindio.envio.modelo.enums.TipEstado;
 import co.edu.uniquindio.envio.modelo.enums.TipoEnvio;
 import javafx.fxml.FXMLLoader;
@@ -116,8 +117,17 @@ public class ControladorPrincipal implements EnvioServicio {
     }
 
     @Override
-    public EnvioHistorico crearHistorial(String codigoEnvio, String remitente, String destinatario, List<Paquete> paquetes, TipoEnvio tipo, TipEstado estados, LocalDate fecha,float distancia,float valor) throws Exception {
-        return envios.crearHistorial(codigoEnvio,remitente,destinatario,paquetes,tipo,estados, fecha,distancia,valor);
+    public EnvioHistorico crearHistorial(String codigoEnvio, String remitente, String destinatario, List<Paquete> paquetes, TipoEnvio tipo, Ciudad ciudad, TipEstado estados, LocalDate fecha, float distancia, float valor) throws Exception {
+        return envios.crearHistorial(codigoEnvio,remitente,destinatario,paquetes,tipo,ciudad,estados, fecha,distancia,valor);
+    }
+
+    @Override
+    public EnvioHistorico obtenerHistorico() {
+        return envios.obtenerHistorico();
+    }
+    @Override
+    public List<EnvioHistorico> filtrarDatos(LocalDate fecha, TipoEnvio tipo, TipEstado estado){
+        return envios.filtrarDatos(fecha,tipo,estado);
     }
 
 

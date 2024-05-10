@@ -12,15 +12,25 @@
 
        <DatePicker layoutX="14.0" layoutY="63.0" prefWidth="150.0" fx:id="dataFecha"/>
 
-      <ChoiceBox layoutX="180.0" layoutY="63.0" prefWidth="150.0" >
+      <ChoiceBox layoutX="180.0" layoutY="63.0" prefWidth="150.0" fx:id="selectestados" >
           <items>
               <FXCollections fx:factory="observableArrayList">
-                  <String fx:value="EXPRESS"/>
-                  <String fx:value="ESTÁNDAR"/>
+                  <String fx:value="CREADO"/>
+                  <String fx:value="ENVIADO"/>
+                  <String fx:value="TRANSITO"/>
+                  <String fx:value="ENTREGADO"/>
               </FXCollections>
           </items>
       </ChoiceBox>
-      <Button layoutX="358.0" layoutY="63.0" mnemonicParsing="false" text="Filtrar" />
+       <ChoiceBox fx:id="selecttipo" layoutX="340.0" layoutY="63.0" prefWidth="150.0"  >
+           <items>
+               <FXCollections fx:factory="observableArrayList">
+                   <String fx:value="EXPRESS"/>
+                   <String fx:value="ESTÁNDAR"/>
+               </FXCollections>
+           </items>
+       </ChoiceBox>
+      <Button layoutX="500.0" layoutY="63.0" mnemonicParsing="false" text="Filtrar" onAction="#filtar"/>
 
        <Label layoutX="52.0" layoutY="33.0" text="Fecha">
            <font>
@@ -32,15 +42,19 @@
                <Font size="18.0" />
            </font>
        </Label>
+       <Label layoutX="350.0" layoutY="33.0" text="Tipo ">
+           <font>
+               <Font size="18.0" />
+           </font>
+       </Label>
       <TableView layoutX="22.0" layoutY="108.0" prefHeight="200.0" prefWidth="510.0" fx:id="tablaSegui">
         <columns>
           <TableColumn prefWidth="75.0" text="Codigo" fx:id="code" />
-          <TableColumn prefWidth="75.0" text="Fecha " />
-            <TableColumn prefWidth="75.0" text="Estado " />
-            <TableColumn prefWidth="75.0" text="Ciudad" />
-            <TableColumn prefWidth="75.0" text="Tipo " />
-            <TableColumn prefWidth="75.0" text="Peso " />
-            <TableColumn prefWidth="75.0" text="Valor " />
+          <TableColumn prefWidth="75.0" text="Fecha " fx:id="fecha" />
+            <TableColumn prefWidth="75.0" text="Estado " fx:id="estado" />
+            <TableColumn prefWidth="75.0" text="Ciudad" fx:id="ciudad"/>
+            <TableColumn prefWidth="75.0" text="Tipo " fx:id="tipo"/>
+            <TableColumn prefWidth="75.0" text="Valor " fx:id="valor"/>
         </columns>
       </TableView>
 
