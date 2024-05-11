@@ -69,12 +69,6 @@ public class Envios implements EnvioServicio {
         }
         return null;
     }
-    public EnvioHistorico obtenerHistorico(){
-        for (int historys =0; historys < envioHistory.size(); historys ++){
-            return envioHistory.get(historys);
-        }
-        return null;
-    }
     public void actualizarPersona(String cedula,String nombre,String direccion,String ciudad,String numero,String correo)throws Exception{
         if(cedula == null || cedula.isBlank()){
             throw new Exception("El número de identificación es obligatorio");
@@ -219,6 +213,8 @@ public class Envios implements EnvioServicio {
                 .tipo(tipo)
                 .estados(estados)
                 .fecha(fecha)
+                .distancia(distancia)
+                .valor(valor)
                 .build();
         envioHistory.add(envios);
         return envios;
@@ -236,7 +232,33 @@ public class Envios implements EnvioServicio {
         }
         return enviosFiltrados;
     }
+    public List<EnvioHistorico> datos(){
+        List<EnvioHistorico> enviosHito = new ArrayList<>();
+        for (EnvioHistorico envioss : envioHistory){
+            enviosHito.add(envioss);
+        }
+        return enviosHito;
+    }
+    public EnvioHistorico cargarEnvio(String codigo){
+        for(EnvioHistorico envio : envioHistory){
+            if(envio.getCodigoEnvio().equals(codigo)){
+                return envio;
+            }
+        }
+        return null;
+    }
 
+    public void actualizarEnvio(String codigo, TipEstado estado)throws Exception{
+        if(estado == null){
+            throw new Exception("el estado es obligatoria");
+        }
+        for (EnvioHistorico envio : envioHistory) {
+            if (envio.getCodigoEnvio().equals(codigo)) {
+                envio.setEstados(estado);
+                break;
+            }
+        }
+    }
 
 }
 

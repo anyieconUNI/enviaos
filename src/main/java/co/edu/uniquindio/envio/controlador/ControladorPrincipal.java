@@ -122,13 +122,20 @@ public class ControladorPrincipal implements EnvioServicio {
     }
 
     @Override
-    public EnvioHistorico obtenerHistorico() {
-        return envios.obtenerHistorico();
-    }
-    @Override
     public List<EnvioHistorico> filtrarDatos(LocalDate fecha, TipoEnvio tipo, TipEstado estado){
         return envios.filtrarDatos(fecha,tipo,estado);
     }
 
+    @Override
+    public List<EnvioHistorico> datos() {
+        return envios.datos();
+    }
+
+    public EnvioHistorico cargarEnvio(String codigo){
+        return envios.cargarEnvio(codigo);
+    }
+    public void actualizarEnvio(String codigo, TipEstado estado)throws Exception{
+        envios.actualizarEnvio(codigo, estado);
+    }
 
 }

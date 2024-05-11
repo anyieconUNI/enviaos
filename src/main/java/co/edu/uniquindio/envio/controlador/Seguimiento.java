@@ -42,10 +42,19 @@ public class Seguimiento implements Initializable {
             estado.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEstados().toString()));
             tipo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTipo().toString()));
             ciudad.setCellValueFactory(cellData -> new SimpleStringProperty(""+cellData.getValue().getCiudad()));
-            valor.setCellValueFactory(cellData -> new SimpleStringProperty(Float.toString(cellData.getValue().getValor())));
-            tablaSegui.setItems(FXCollections.observableArrayList(controladorPrincipal.obtenerHistorico()));
+            valor.setCellValueFactory(cellData -> new SimpleStringProperty(""+cellData.getValue().getValor()));
+            tablaSegui.setItems(FXCollections.observableArrayList(controladorPrincipal.datos()));
 
-
+            //ESCUCHA LOS CLICK DE LA TABLA Y SE EJECUTA
+            tablaSegui.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 1) {
+                    EnvioHistorico selectedEnvio = tablaSegui.getSelectionModel().getSelectedItem();
+                    if (selectedEnvio != null) {
+                        System.out.println("Código del envío seleccionado: " + selectedEnvio.getCodigoEnvio());
+                        controladorPrincipal.navegar("/dataEnvio.fxml","Data Envios",selectedEnvio.getCodigoEnvio(), tablaSegui);
+                    }
+                }
+            });
         }
 
     public void filtar(ActionEvent actionEvent) {
@@ -58,6 +67,5 @@ public class Seguimiento implements Initializable {
         List<EnvioHistorico> enviosFiltrados = controladorPrincipal.filtrarDatos(date,tipo,estado);
         tablaSegui.setItems(FXCollections.observableArrayList(enviosFiltrados));
     }
-
 }
 

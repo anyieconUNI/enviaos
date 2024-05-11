@@ -25,8 +25,8 @@ public interface EnvioServicio {
 
     double calcularPrecio(float distancia, TipoEnvio tipo, float peso, int cantidadPaquetes) throws Exception;
     EnvioHistorico crearHistorial(String codigoEnvio, String remitente, String destinatario, List<Paquete> paquetes, TipoEnvio tipo, Ciudad ciudad, TipEstado estados, LocalDate fecha, float distancia, float valor)throws Exception;
-
-    public EnvioHistorico obtenerHistorico();
     public List<EnvioHistorico> filtrarDatos(LocalDate fecha, TipoEnvio tipo, TipEstado estado);
-
+    public List<EnvioHistorico> datos();
+    public EnvioHistorico cargarEnvio(String codigo);
+    public void actualizarEnvio(String codigo, TipEstado estado)throws Exception;
 }

@@ -116,11 +116,13 @@ public class RegisPaquete implements Parametrizable {
                 float distancia = Float.parseFloat(txtdistancias.getText());
                 float valor = Float.parseFloat(labelValor.getText());
                     ObservableList<Paquete> listaPaquetes = tablaPaquete.getItems();
-                    System.out.println(listaPaquetes);
+                System.out.println(listaPaquetes);
+                System.out.println("ESTE ES EL VALOR: "+ valor);
                     controladorPrincipal.mostrarAlerta("Envio Creado", Alert.AlertType.CONFIRMATION);
                 try {
                     controladorPrincipal.crearHistorial(codigo,idEmisor,idReceptor,listaPaquetes,tipo,ciudad,TipEstado.CREADO,fechaActual,distancia,valor);
-                    System.out.println(controladorPrincipal.obtenerHistorico());
+                    System.out.println(controladorPrincipal.datos());
+
                 }catch (Exception e) {
                     controladorPrincipal.mostrarAlerta(e.getMessage(), Alert.AlertType.ERROR);
                 }
