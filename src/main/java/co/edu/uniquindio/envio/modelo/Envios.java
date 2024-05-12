@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Random;
 
 @Getter
-public class Envios implements EnvioServicio {
+public class Envios implements EnvioServicio  {
     private final ArrayList<Persona> personas;
     private final ArrayList<Paquete> paquetes;
     private final  ArrayList<EnvioHistorico> envioHistory;

@@ -1,9 +1,11 @@
 package co.edu.uniquindio.envio.controlador;
 
 import co.edu.uniquindio.envio.modelo.Paquete;
+import co.edu.uniquindio.envio.modelo.Persona;
 import co.edu.uniquindio.envio.modelo.enums.Ciudad;
 import co.edu.uniquindio.envio.modelo.enums.TipEstado;
 import co.edu.uniquindio.envio.modelo.enums.TipoEnvio;
+import co.edu.uniquindio.envio.utils.EnvioSms;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -56,13 +58,15 @@ public class RegisPaquete implements Parametrizable {
     public Button enviar;
     String idEmisor;
     String idReceptor;
+    String numeroReceptor;
 
     @Override
     public void datosPersona(Object... parametros) {
-        if (parametros.length >= 2) {
+        if (parametros.length >= 3) {
             // Extraer los parámetros recibidos
             idEmisor = (String) parametros[0];
             idReceptor = (String) parametros[1];
+            numeroReceptor= (String) parametros[2];
             System.out.println(idEmisor+"recptor"+idReceptor);
         } else {
             System.out.println("No se proporcionaron suficientes parámetros");
@@ -113,7 +117,7 @@ public class RegisPaquete implements Parametrizable {
         }
     }
 
-    public void crearEnvio(ActionEvent actionEvent) {
+    public void crearEnvio(ActionEvent actionEvent) throws Exception {
         if (tablaPaquete.getItems().isEmpty()) {
             controladorPrincipal.mostrarAlerta("Primero se deben registrar paquetes.", Alert.AlertType.ERROR);
         }
@@ -141,6 +145,7 @@ public class RegisPaquete implements Parametrizable {
                     ObservableList<Paquete> listaPaquetes = tablaPaquete.getItems();
                     System.out.println(listaPaquetes);
                     System.out.println("ESTE ES EL VALOR: " + valor);
+//                    enviarMensaje(idReceptor,codigo);
                     controladorPrincipal.mostrarAlerta("Envio Creado", Alert.AlertType.CONFIRMATION);
                     try {
                         controladorPrincipal.crearHistorial(codigo, idEmisor, idReceptor, listaPaquetes, tipo, ciudad, TipEstado.CREADO, fechaActual, distancia, valor);
@@ -152,6 +157,24 @@ public class RegisPaquete implements Parametrizable {
 
                 }
             }
+        }
+    }
+    private void enviarMensaje(String idPersona, String codigo) throws Exception {
+        Persona persona = controladorPrincipal.obtenerPersonas(idPersona);
+        if (persona != null) {
+            String numero = persona.getNumero();
+            System.out.println(numero);
+            if (numero != null && !numero.isBlank()) {
+                EnvioSms envioSms = new EnvioSms();
+                envioSms.crearConexion();
+                envioSms.mensaje = "Sus paquetes llegaran Pronto, codigo de seguimiento: " + codigo;
+                envioSms.numero = numeroReceptor;
+                envioSms.enviarNotificacion();
+            } else {
+                controladorPrincipal.mostrarAlerta("El número de teléfono del usuario no está disponible.", Alert.AlertType.WARNING);
+            }
+        } else {
+            controladorPrincipal.mostrarAlerta("No se pudo encontrar la persona con el ID proporcionado.", Alert.AlertType.WARNING);
         }
     }
 
