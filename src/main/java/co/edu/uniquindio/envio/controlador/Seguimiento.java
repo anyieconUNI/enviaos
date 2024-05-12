@@ -10,10 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -58,14 +55,19 @@ public class Seguimiento implements Initializable {
         }
 
     public void filtar(ActionEvent actionEvent) {
-        String tipos = (String) selecttipo.getValue();
-        TipoEnvio tipo = TipoEnvio.valueOf(tipos);
-        String estados = (String) selectestados.getValue();
-        TipEstado estado = TipEstado.valueOf(estados);
-        LocalDate date = dataFecha.getValue();
+        if(dataFecha.getValue()==null || selectestados.getValue()==null || selecttipo.getValue()==null){
+            controladorPrincipal.mostrarAlerta("Todos los campos son obligatorios para filtrar", Alert.AlertType.ERROR);
+        }
+        else {
+            String tipos = (String) selecttipo.getValue();
+            TipoEnvio tipo = TipoEnvio.valueOf(tipos);
+            String estados = (String) selectestados.getValue();
+            TipEstado estado = TipEstado.valueOf(estados);
+            LocalDate date = dataFecha.getValue();
 
-        List<EnvioHistorico> enviosFiltrados = controladorPrincipal.filtrarDatos(date,tipo,estado);
-        tablaSegui.setItems(FXCollections.observableArrayList(enviosFiltrados));
+            List<EnvioHistorico> enviosFiltrados = controladorPrincipal.filtrarDatos(date, tipo, estado);
+            tablaSegui.setItems(FXCollections.observableArrayList(enviosFiltrados));
+        }
     }
 }
 

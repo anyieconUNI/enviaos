@@ -76,6 +76,7 @@ public class Receptor implements Initializable, Parametrizable {
                 controladorPrincipal.actualizarPersona(txtIdentificacion.getText(),txtNombre.getText(),txtDireccion.getText(),txtCiudad.getText(),txtNuTele.getText(),txtCorreo.getText());
                 System.out.println("se actualizó");
                 controladorPrincipal.navegar("/regisPaquete.fxml", "Enviaos",idEmisor,txtIdentificacion.getText());
+                controladorPrincipal.cerrarVentana(txtIdentificacion);
             }catch (Exception e){
                 System.out.println("Problemas para actualizar");
             }
@@ -85,6 +86,7 @@ public class Receptor implements Initializable, Parametrizable {
                 controladorPrincipal.agregarPersonas(txtIdentificacion.getText(),txtNombre.getText(),txtDireccion.getText(),txtCiudad.getText(),txtNuTele.getText(),txtCorreo.getText());
                 System.out.println("Creado");
                 controladorPrincipal.navegar("/regisPaquete.fxml", "Enviaos",idEmisor,txtIdentificacion.getText());
+                controladorPrincipal.cerrarVentana(txtIdentificacion);
             }catch (Exception e){
                 controladorPrincipal.mostrarAlerta(e.getMessage(), Alert.AlertType.ERROR);
             }

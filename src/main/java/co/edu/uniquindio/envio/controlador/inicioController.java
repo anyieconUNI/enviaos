@@ -14,7 +14,11 @@ public class inicioController {
         controladorPrincipal.navegar("/emisor.fxml", "Enviaos");
     }
 
+    public void envios(ActionEvent actionEvent) {
+        controladorPrincipal.navegar("/seguimiento.fxml","Envios");
+    }
+
     public void paquetes(ActionEvent actionEvent) {
-        controladorPrincipal.navegar("/seguimiento.fxml","Paquetes");
+        controladorPrincipal.navegar("/paquetes.fxml","Paquetes");
     }
 }

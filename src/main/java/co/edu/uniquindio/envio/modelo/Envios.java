@@ -94,16 +94,17 @@ public class Envios implements EnvioServicio {
         }
     }
 
-    public Paquete agregarPaquete(String descripcion,float peso)throws Exception{
-        if(descripcion == null || descripcion.isBlank()){
-            throw new Exception("La descripción es obligatorio");
+    public Paquete agregarPaquete(String descripcion,String peso)throws Exception{
+        if(descripcion == null || descripcion.isBlank() || descripcion ==""){
+            throw new Exception("La descripción es obligatoria");
         }
-        if(peso == 0.0){
+        if(peso == null || peso.isBlank() || peso ==""){
             throw new Exception("El peso es obligatorio");
         }
+        float pesoConvert = Float.parseFloat(peso);
         Paquete paquete = Paquete.builder()
                 .descripcion(descripcion)
-                .peso(peso)
+                .peso(pesoConvert)
                 .build();
         paquetes.add(paquete);
 
@@ -258,6 +259,22 @@ public class Envios implements EnvioServicio {
                 break;
             }
         }
+    }
+    public List<Paquete> obtenerPaquetesPorCodigo(String codigo) {
+        List<Paquete> paquetesPorCodigo = new ArrayList<>();
+        for (EnvioHistorico envio : envioHistory) {
+            if (envio.getCodigoEnvio().equals(codigo)) {
+                paquetesPorCodigo.addAll(envio.getPaquetes());
+            }
+        }
+        return paquetesPorCodigo;
+    }
+    public List<Paquete> paquetesCargar() {
+        List<Paquete> listaPaquetes = new ArrayList<>();
+        for (Paquete paquete : paquetes) {
+            listaPaquetes.add(paquete);
+        }
+        return listaPaquetes;
     }
 
 }

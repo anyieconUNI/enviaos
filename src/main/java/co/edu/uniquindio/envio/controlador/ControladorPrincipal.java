@@ -102,7 +102,7 @@ public class ControladorPrincipal implements EnvioServicio {
     }
 
     @Override
-    public Paquete agregarPaquete(String descripcion, float peso) throws Exception {
+    public Paquete agregarPaquete(String descripcion, String peso) throws Exception {
         return envios.agregarPaquete(descripcion, peso);
     }
 
@@ -137,5 +137,10 @@ public class ControladorPrincipal implements EnvioServicio {
     public void actualizarEnvio(String codigo, TipEstado estado)throws Exception{
         envios.actualizarEnvio(codigo, estado);
     }
-
+    public List<Paquete> obtenerPaquetesPorCodigo(String codigo){
+        return envios.obtenerPaquetesPorCodigo(codigo);
+    }
+    public List<Paquete> paquetesCargar(){
+        return envios.paquetesCargar();
+    }
 }
