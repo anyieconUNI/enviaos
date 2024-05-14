@@ -3,6 +3,7 @@ import co.edu.uniquindio.envio.modelo.*;
 import co.edu.uniquindio.envio.modelo.enums.Ciudad;
 import co.edu.uniquindio.envio.modelo.enums.TipEstado;
 import co.edu.uniquindio.envio.modelo.enums.TipoEnvio;
+import co.edu.uniquindio.envio.utils.Persistencia;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -13,7 +14,9 @@ import lombok.Getter;
 import org.example.servicio.EnvioServicio;
 import org.example.servicio.Parametrizable;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,12 +29,15 @@ public class ControladorPrincipal implements EnvioServicio {
 
     private final Envios envios;
     public static ControladorPrincipal INSTANCIA;
+//    private final Persistencia persistencia;
 
-    private ControladorPrincipal(){
+    private ControladorPrincipal() throws Exception {
         envios = new Envios();
+
+//        this.persistencia = new Persistencia();
     }
 
-    public static ControladorPrincipal getInstancia(){
+    public static ControladorPrincipal getInstancia()throws Exception{
         if(INSTANCIA == null){
             INSTANCIA = new ControladorPrincipal();
         }
@@ -92,6 +98,16 @@ public class ControladorPrincipal implements EnvioServicio {
     }
 
     @Override
+    public void guardarDatos() throws Exception {
+
+    }
+
+    @Override
+    public void cargarDatos() throws Exception {
+
+    }
+
+    @Override
     public Persona obtenerPersonas(String cedula) throws Exception {
         return envios.obtenerPersonas(cedula);
     }
@@ -142,6 +158,16 @@ public class ControladorPrincipal implements EnvioServicio {
     }
     public List<Paquete> paquetesCargar(){
         return envios.paquetesCargar();
+    }
+
+    @Override
+    public Factura crearFactura(String codigoEnvio, String total, String subtotal) throws Exception {
+        return envios.crearFactura(codigoEnvio,total,subtotal);
+    }
+
+    @Override
+    public double calcularPericoSubTotal(float distancia, TipoEnvio tipo, float peso, int cantidadPaquetes){
+        return envios.calcularPericoSubTotal(distancia,tipo,peso,cantidadPaquetes);
     }
 
 }

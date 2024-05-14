@@ -22,7 +22,7 @@ public class EnvioSms implements Notificar {
     public void enviarNotificacion() {
         crearConexion();
         Message.creator(
-                        new PhoneNumber(numero),
+                        new PhoneNumber("+57"+numero),
                         new PhoneNumber("+13144634534"),
                         mensaje)
                 .create();

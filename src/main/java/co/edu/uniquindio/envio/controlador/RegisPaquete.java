@@ -55,10 +55,17 @@ public class RegisPaquete implements Parametrizable {
     public Button agregar;
     @FXML
     public ChoiceBox selectCiudad;
+    @FXML
     public Button enviar;
+    @FXML
+    public Label facturas;
+    public Button factura;
     String idEmisor;
     String idReceptor;
     String numeroReceptor;
+
+    public RegisPaquete() throws Exception {
+    }
 
     @Override
     public void datosPersona(Object... parametros) {
@@ -92,6 +99,7 @@ public class RegisPaquete implements Parametrizable {
 
     boolean data = false;
     public void calcular(ActionEvent actionEvent) {
+        factura.setDisable(false);
         if (txtdistancias.getText() ==null || txtdistancias.getText().isBlank() || selectCategorys.getValue()==null || selectCiudad.getValue() == null){
             controladorPrincipal.mostrarAlerta("Todos los campos son obligatorios", Alert.AlertType.ERROR);
 
@@ -109,7 +117,6 @@ public class RegisPaquete implements Parametrizable {
                 float precio = (float) controladorPrincipal.calcularPrecio(distancia, tipo, pesoTotal, cantidadPaquetes);
                 System.out.println(precio);
                 data = true;
-                enviar.setDisable(false);
                 labelValor.setText(String.valueOf(precio));
             } catch (Exception e) {
                 controladorPrincipal.mostrarAlerta(e.getMessage(), Alert.AlertType.ERROR);
@@ -144,8 +151,11 @@ public class RegisPaquete implements Parametrizable {
                     float valor = Float.parseFloat(labelValor.getText());
                     ObservableList<Paquete> listaPaquetes = tablaPaquete.getItems();
                     System.out.println(listaPaquetes);
-                    System.out.println("ESTE ES EL VALOR: " + valor);
-//                    enviarMensaje(idReceptor,codigo);
+                    System.out.println("ESTE ES EL VALOR: " + idReceptor);
+                    String mensajeRecep = "Sus paquetes llegaran Pronto, codigo de seguimiento: " + codigo + "y se encuentra en estado" + TipEstado.CREADO;
+                    String mensajeEmi = "Sus paquetes serán entregados pronto a su lugar de destino, codigo de seguimiento: " + codigo + "y se encuentra en estado" + TipEstado.CREADO;
+//                    enviarMensaje(idReceptor,codigo,mensajeRecep);
+//                    enviarMensaje(idEmisor,codigo,mensajeEmi);
                     controladorPrincipal.mostrarAlerta("Envio Creado", Alert.AlertType.CONFIRMATION);
                     try {
                         controladorPrincipal.crearHistorial(codigo, idEmisor, idReceptor, listaPaquetes, tipo, ciudad, TipEstado.CREADO, fechaActual, distancia, valor);
@@ -159,7 +169,7 @@ public class RegisPaquete implements Parametrizable {
             }
         }
     }
-    private void enviarMensaje(String idPersona, String codigo) throws Exception {
+    private void enviarMensaje(String idPersona, String codigo,String mensaje) throws Exception {
         Persona persona = controladorPrincipal.obtenerPersonas(idPersona);
         if (persona != null) {
             String numero = persona.getNumero();
@@ -167,8 +177,8 @@ public class RegisPaquete implements Parametrizable {
             if (numero != null && !numero.isBlank()) {
                 EnvioSms envioSms = new EnvioSms();
                 envioSms.crearConexion();
-                envioSms.mensaje = "Sus paquetes llegaran Pronto, codigo de seguimiento: " + codigo;
-                envioSms.numero = numeroReceptor;
+                envioSms.mensaje =mensaje;
+                envioSms.numero = numero;
                 envioSms.enviarNotificacion();
             } else {
                 controladorPrincipal.mostrarAlerta("El número de teléfono del usuario no está disponible.", Alert.AlertType.WARNING);
@@ -178,4 +188,20 @@ public class RegisPaquete implements Parametrizable {
         }
     }
 
+    public void facturar(ActionEvent actionEvent) throws Exception {
+        enviar.setDisable(false);
+        String tipos = (String) selectCategorys.getValue();
+        TipoEnvio tipo = TipoEnvio.valueOf(tipos);
+        String codigo = controladorPrincipal.generarCodigo(tipo);
+        String valor =labelValor.getText();
+        float pesoTotal = 0;
+        for (Paquete paquete : tablaPaquete.getItems()) {
+            pesoTotal += paquete.getPeso();
+        }
+        float distancia = Float.parseFloat(txtdistancias.getText());
+        int cantidadPaquetes = tablaPaquete.getItems().size();
+        String subTotal = String.valueOf(controladorPrincipal.calcularPericoSubTotal(distancia, tipo, pesoTotal, cantidadPaquetes));
+        controladorPrincipal.crearFactura(codigo,valor,subTotal);
+        facturas.setText("Su factura con la empresa Enviaos por la cantidad de " + cantidadPaquetes + " paquetes \nes de un costo de:\nSubTotal: " + subTotal + "\nTotal: " + valor);
+    }
 }

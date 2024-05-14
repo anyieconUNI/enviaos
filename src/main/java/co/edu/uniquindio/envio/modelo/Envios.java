@@ -2,25 +2,31 @@ package co.edu.uniquindio.envio.modelo;
 import co.edu.uniquindio.envio.modelo.enums.Ciudad;
 import co.edu.uniquindio.envio.modelo.enums.TipEstado;
 import co.edu.uniquindio.envio.modelo.enums.TipoEnvio;
+import co.edu.uniquindio.envio.utils.Persistencia;
 import lombok.Getter;
 import org.example.servicio.EnvioServicio;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 @Getter
-public class Envios implements EnvioServicio  {
+public class Envios implements EnvioServicio, Serializable {
     private final ArrayList<Persona> personas;
     private final ArrayList<Paquete> paquetes;
     private final  ArrayList<EnvioHistorico> envioHistory;
+    private  final ArrayList<Factura> facturas;
 
-    public Envios() {
+    public Envios() throws Exception {
         this.personas = new ArrayList<>();
         this.paquetes = new ArrayList<>();
         this.envioHistory = new ArrayList<>();
-        llenarDatosPrueba();
+        this.facturas = new ArrayList<>();
+//        llenarDatosPrueba();
+        cargarDatos();
     }
 
     private void llenarDatosPrueba(){
@@ -58,8 +64,45 @@ public class Envios implements EnvioServicio  {
                 .build();
 
         personas.add(persona);
-
+        guardarDatos();
         return persona;
+    }
+    @Override
+    public void guardarDatos() throws Exception {
+        try {
+            Persistencia persistencia = new Persistencia();
+            persistencia.guardarPersonas(personas);
+            Persistencia.guardarFacturas(facturas);
+            persistencia.guardarEnviosHistory(envioHistory);
+            Persistencia.guardarPaquetes(paquetes);
+
+        } catch (IOException e) {
+            throw new Exception(e);
+        }
+    }
+    @Override
+    public void cargarDatos() throws Exception {
+        try {
+            Persistencia persistencia = new Persistencia();
+            ArrayList<Persona> personasCargadas = persistencia.cargarPersonas();
+            ArrayList<Factura> facturasCargadas = persistencia.cargarFacturas();
+            ArrayList<EnvioHistorico> enviosCargados = persistencia.cargarEnvioHistoricos();
+
+            if(personasCargadas != null){
+                personas.addAll(personasCargadas);
+            }
+
+            if(facturasCargadas != null){
+                facturas.addAll(facturasCargadas);
+            }
+
+            if(enviosCargados != null){
+                envioHistory.addAll(enviosCargados);
+            }
+
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
     }
     public Persona obtenerPersonas(String cedula){
         for(int perso = 0; perso < personas.size(); perso ++){
@@ -67,6 +110,7 @@ public class Envios implements EnvioServicio  {
                 return personas.get(perso);
             }
         }
+
         return null;
     }
     public void actualizarPersona(String cedula,String nombre,String direccion,String ciudad,String numero,String correo)throws Exception{
@@ -89,6 +133,7 @@ public class Envios implements EnvioServicio  {
             if(personas.get(perso).getCedula().equals(cedula)){
                 Persona persona = new Persona(cedula, nombre, direccion, ciudad, numero, correo);
                 personas.set(perso, persona);
+                guardarDatos();
                 break;
             }
         }
@@ -107,7 +152,7 @@ public class Envios implements EnvioServicio  {
                 .peso(pesoConvert)
                 .build();
         paquetes.add(paquete);
-
+        guardarDatos();
         return paquete;
     }
 
@@ -166,6 +211,33 @@ public class Envios implements EnvioServicio  {
 
         return precioTotal;
     }
+    public double calcularPericoSubTotal(float distancia, TipoEnvio tipo, float peso, int cantidadPaquetes){
+        double precioBase;
+        double tarifaAdicional;
+
+        // Seleccionar el precio base según el tipo de envío
+        if (tipo == TipoEnvio.EXPRESS) {
+            precioBase = PRECIO_BASE_EXPRESS;
+            tarifaAdicional = TARIFA_ADICIONAL_EXPRESS;
+        } else {
+            precioBase = PRECIO_BASE_ESTANDAR;
+            tarifaAdicional = TARIFA_ADICIONAL_ESTANDAR;
+        }
+
+        // Calcular tarifa adicional por peso
+        double pesoAdicional = Math.max(0, peso - (tipo == TipoEnvio.EXPRESS ? 2.0 : 2.5));
+        double tarifaPesoAdicional = pesoAdicional * tarifaAdicional;
+
+        // Calcular tarifa adicional por distancia
+        double tarifaDistancia = (distancia > 500) ?
+                (tipo == TipoEnvio.EXPRESS ? TARIFA_DISTANCIA_EXPRESS : TARIFA_DISTANCIA_ESTANDAR) : 0.0;
+
+        double precioSubtotal = precioBase + tarifaPesoAdicional + tarifaDistancia ;
+
+        double precioTotal = precioSubtotal ;
+
+        return precioTotal;
+    }
     public void alerta(float distancia, TipoEnvio tipo)throws Exception{
         if (distancia == 0.0|| tipo == null ) {
             throw new Exception("Todos los parámetros son obligatorios");
@@ -218,7 +290,18 @@ public class Envios implements EnvioServicio  {
                 .valor(valor)
                 .build();
         envioHistory.add(envios);
+        guardarDatos();
         return envios;
+    }
+    public Factura crearFactura(String codigoEnvio,String total,String subtotal) throws Exception {
+        Factura factura= Factura.builder()
+                .codigoEnvio(codigoEnvio)
+                .total(total)
+                .subtotal(subtotal)
+                .build();
+        facturas.add(factura);
+        guardarDatos();
+        return factura;
     }
     public List<EnvioHistorico> filtrarDatos(LocalDate fecha, TipoEnvio tipo, TipEstado estado) {
         List<EnvioHistorico> enviosFiltrados = new ArrayList<>();
@@ -256,6 +339,7 @@ public class Envios implements EnvioServicio  {
         for (EnvioHistorico envio : envioHistory) {
             if (envio.getCodigoEnvio().equals(codigo)) {
                 envio.setEstados(estado);
+                guardarDatos();
                 break;
             }
         }
@@ -276,6 +360,7 @@ public class Envios implements EnvioServicio  {
         }
         return listaPaquetes;
     }
+
 
 }
 

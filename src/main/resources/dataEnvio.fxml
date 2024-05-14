@@ -33,6 +33,8 @@
                 </FXCollections>
             </items>
         </ChoiceBox>
+        <Label fx:id="idReceptor" disable="false"/>
+        <Label fx:id="idEmisor" disable="false"/>
         <Label text="Distancia: " GridPane.columnIndex="0" GridPane.rowIndex="2" />
         <Label fx:id="txtDistan" GridPane.columnIndex="1" GridPane.rowIndex="2" minHeight="30.0" />
 

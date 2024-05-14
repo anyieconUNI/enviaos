@@ -28,6 +28,10 @@ public class Emisor implements Initializable {
     private final ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
 
     Boolean dataPersona = false;
+
+    public Emisor() throws Exception {
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         txtIdentificacion.textProperty().addListener((observable, oldValue, newValue) -> {

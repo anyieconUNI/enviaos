@@ -10,7 +10,7 @@ import org.example.servicio.CrearEnvio;
 import java.time.LocalDate;
 import java.util.List;
 
-public class CrearEnvios implements CrearEnvio {
+public class CrearEnviosEstandar implements CrearEnvio {
     @Override
     public EnvioHistorico crearHistorial(String codigoEnvio, String remitente, String destinatario, List<Paquete> paquetes, TipoEnvio tipo, Ciudad ciudad, TipEstado estados, LocalDate fecha, float distancia, float valor){
         EnvioHistorico envios =EnvioHistorico.builder()

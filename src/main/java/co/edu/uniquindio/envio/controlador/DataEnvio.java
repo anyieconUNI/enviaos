@@ -1,7 +1,10 @@
 package co.edu.uniquindio.envio.controlador;
 
 import co.edu.uniquindio.envio.modelo.EnvioHistorico;
+import co.edu.uniquindio.envio.modelo.Persona;
 import co.edu.uniquindio.envio.modelo.enums.TipEstado;
+import co.edu.uniquindio.envio.utils.EnvioEmail;
+import co.edu.uniquindio.envio.utils.EnvioSms;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,8 +34,13 @@ public class DataEnvio implements Parametrizable,Initializable {
     public Label txtFecha;
     @FXML
     public Label txtValor;
+    public Label idReceptor;
+    public Label idEmisor;
     String code;
     private final ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
+
+    public DataEnvio() throws Exception {
+    }
 
     @Override
     public void datosPersona(Object... parametros) {
@@ -59,6 +67,9 @@ public class DataEnvio implements Parametrizable,Initializable {
             txtDistan.setText(String.valueOf(envio.getDistancia()));
             txtFecha.setText(String.valueOf(envio.getFecha()));
             txtValor.setText(String.valueOf(envio.getValor()));
+            idReceptor.setText(String.valueOf(envio.getDestinatario()));
+            idEmisor.setText(String.valueOf(envio.getRemitente()));
+            System.out.println("ESTI ES LO QQUE CARGA "+idEmisor+"         "+String.valueOf(idReceptor));
         }
     }
     public void initialize(URL location, ResourceBundle resources) {
@@ -76,8 +87,59 @@ public class DataEnvio implements Parametrizable,Initializable {
                 tablaSegui.getItems().clear();
             }
             tablaSegui.setItems(FXCollections.observableArrayList(controladorPrincipal.datos()));
+            String mensajeRecep = "Sus paquetes llegaran Pronto, codigo de seguimiento: " + code + "y se encuentra en estado" +  String.valueOf(selectestados.getValue());
+            String mensajeEmi = "Sus paquetes serán entregados pronto a su lugar de destino, codigo de seguimiento: " + code + "y se encuentra en estado" +  String.valueOf(selectestados.getValue());
+//                    enviarMensaje(idReceptor,code,mensajeRecep);
+//                    enviarMensaje(idEmisor,code,mensajeEmi);
+            enviarCorreo(idReceptor.getText(),code,mensajeRecep);
+//            enviarCorreo(idEmisor.getText(),code,mensajeEmi);
+            System.out.println("EL ID QUE RECIVE: "+idReceptor.getText());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+    private void enviarMensaje(String idPersona, String codigo, String estado,String mensaje) throws Exception {
+        Persona persona = controladorPrincipal.obtenerPersonas(idPersona);
+        if (persona != null) {
+            String numero = persona.getNumero();
+            System.out.println(numero);
+            if (numero != null && !numero.isBlank()) {
+                EnvioSms envioSms = new EnvioSms();
+                envioSms.crearConexion();
+                envioSms.mensaje = mensaje;
+                envioSms.numero = numero;
+                envioSms.enviarNotificacion();
+            } else {
+                controladorPrincipal.mostrarAlerta("El número de teléfono del usuario no está disponible.", Alert.AlertType.WARNING);
+            }
+        } else {
+            controladorPrincipal.mostrarAlerta("No se pudo encontrar la persona con el ID proporcionado.", Alert.AlertType.WARNING);
+        }
+    }
+    private void enviarCorreo(String idPersona, String codigo,String mensaje) throws Exception {
+        System.out.println("ESTO ES LO QUE RECIVE PARA BUSCAR"+ idPersona);
+        Persona persona = controladorPrincipal.obtenerPersonas(idPersona);
+        if (persona != null) {
+            String email = persona.getCorreo();
+            if (email != null && !email.isBlank()) {
+                EnvioEmail envioEmail = new EnvioEmail();
+                // Podrías considerar pasar las credenciales de correo electrónico como argumentos o leerlas de alguna configuración
+                envioEmail.destinatario = email;
+                envioEmail.asunto = "Notificación de entrega de paquete";
+                envioEmail.mensaje = mensaje;
+
+                // Intentar enviar el correo electrónico
+                try {
+                    envioEmail.enviarNotificacion();
+                } catch (Exception e) {
+                    controladorPrincipal.mostrarAlerta("Error al enviar el correo electrónico: " + e.getMessage(), Alert.AlertType.ERROR);
+                }
+            } else {
+                controladorPrincipal.mostrarAlerta("El correo electrónico del usuario no está disponible.", Alert.AlertType.WARNING);
+            }
+        } else {
+            controladorPrincipal.mostrarAlerta("No se pudo encontrar la persona con el ID proporcionado.", Alert.AlertType.WARNING);
+        }
+    }
+
 }

@@ -9,6 +9,9 @@ import javafx.stage.Stage;
 public class inicioController {
     private final ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
 
+    public inicioController() throws Exception {
+    }
+
 
     public void realizarPedido(ActionEvent actionEvent) {
         controladorPrincipal.navegar("/emisor.fxml", "Enviaos");

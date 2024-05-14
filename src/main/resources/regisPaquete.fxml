@@ -11,7 +11,7 @@
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="co.edu.uniquindio.envio.controlador.RegisPaquete"
-      prefHeight="400.0" prefWidth="600.0" alignment="center" spacing="30.0" >
+      prefHeight="530.0" prefWidth="600.0" alignment="center" spacing="30.0" >
 
     <Label text="Paquete" >
         <font>
@@ -65,9 +65,11 @@
         <Button text="Agregar" fx:id="agregar" onAction="#agregar" minHeight="30.0" minWidth="120.0" style="-fx-background-color: linear-gradient(to right,#E68745, #E36810);-fx-text-fill: white;-fx-font-size: 15px; -fx-font-style: oblique;" />
         <Button text="Crear envio" fx:id="enviar" onAction="#crearEnvio" minHeight="30.0" minWidth="120.0" style="-fx-background-color: linear-gradient(to right,#E68745, #E36810);-fx-text-fill: white;-fx-font-size: 15px; -fx-font-style: oblique;" />
         <Button text="calcular" fx:id="btncalcula" onAction="#calcular" minHeight="30.0" minWidth="120.0" style="-fx-background-color: linear-gradient(to right,#E68745, #E36810);-fx-text-fill: white;-fx-font-size: 15px; -fx-font-style: oblique;" disable="true" />
+        <Button text="Facturar" fx:id="factura" onAction="#facturar" minHeight="30.0" minWidth="120.0" style="-fx-background-color: linear-gradient(to right,#E68745, #E36810);-fx-text-fill: white;-fx-font-size: 15px; -fx-font-style: oblique;" disable="true" />
     </HBox>
+    <Label fx:id="facturas" style="-fx-font-family: 'Arial'; -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333333; -fx-background-color: #f4f4f4; -fx-padding: 10px; -fx-border-width: 2px; -fx-border-color: #cccccc; -fx-border-radius: 5px; -fx-alignment: center;" />
     <GridPane alignment="CENTER">
-        <TableView fx:id="tablaPaquete" prefHeight="100.0" prefWidth="310.0" style="-fx-background-color: lightgray; -fx-border-color: #E68745;">
+        <TableView fx:id="tablaPaquete" prefHeight="100.0" prefWidth="310.0" style="-fx-background-color: lightgray;">
             <columns>
                 <TableColumn prefWidth="100.0" text="Descripción" fx:id="descri"/>
                 <TableColumn prefWidth="100.0" text="Peso" fx:id="pesos"/>

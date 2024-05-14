@@ -2,8 +2,10 @@ package co.edu.uniquindio.envio.controlador;
 
 import co.edu.uniquindio.envio.modelo.EnvioHistorico;
 import co.edu.uniquindio.envio.modelo.Paquete;
+import co.edu.uniquindio.envio.modelo.Persona;
 import co.edu.uniquindio.envio.modelo.enums.TipEstado;
 import co.edu.uniquindio.envio.modelo.enums.TipoEnvio;
+import co.edu.uniquindio.envio.utils.EnvioSms;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,6 +31,10 @@ public class Seguimiento implements Initializable {
     public DatePicker dataFecha;
     public ChoiceBox selectestados;
     public ChoiceBox selecttipo;
+    public Label idReceptor;
+
+    public Seguimiento() throws Exception {
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
@@ -41,7 +47,6 @@ public class Seguimiento implements Initializable {
             ciudad.setCellValueFactory(cellData -> new SimpleStringProperty(""+cellData.getValue().getCiudad()));
             valor.setCellValueFactory(cellData -> new SimpleStringProperty(""+cellData.getValue().getValor()));
             tablaSegui.setItems(FXCollections.observableArrayList(controladorPrincipal.datos()));
-
             //ESCUCHA LOS CLICK DE LA TABLA Y SE EJECUTA
             tablaSegui.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 1) {
@@ -52,6 +57,7 @@ public class Seguimiento implements Initializable {
                     }
                 }
             });
+
         }
 
     public void filtar(ActionEvent actionEvent) {

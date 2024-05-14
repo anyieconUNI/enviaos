@@ -22,6 +22,9 @@ public class Paquetes implements Initializable {
     public TableColumn<Paquete, String> pesos;
     private final ControladorPrincipal controladorPrincipal = ControladorPrincipal.getInstancia();
 
+    public Paquetes() throws Exception {
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         descri.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDescripcion()));

@@ -9,7 +9,9 @@ import org.example.servicio.Notificar;
 import java.util.Properties;
 
 public class EnvioEmail implements Notificar {
-    private String destinatario, asunto, mensaje;
+    public String destinatario;
+    public String asunto;
+    public String mensaje;
 
 
     private Session crearSesion() {
@@ -17,7 +19,8 @@ public class EnvioEmail implements Notificar {
 
         // Se definen las credenciales de la cuenta de correo
         final String username = "anyed.condizaq@uqvirtual.edu.co";
-        final String password = "oct1.0.0.3.5.6";
+        final String password = "oct1.0.0.3.4.5.6";
+
 
 
         // Se configuran las propiedades de la conexión
@@ -81,6 +84,5 @@ public class EnvioEmail implements Notificar {
 
 
     }
-
 
 }

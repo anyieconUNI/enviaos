@@ -29,6 +29,10 @@ public class Receptor implements Initializable, Parametrizable {
 
     Boolean dataPersona = false;
     String idEmisor;
+
+    public Receptor() throws Exception {
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         txtIdentificacion.textProperty().addListener((observable, oldValue, newValue) -> {
