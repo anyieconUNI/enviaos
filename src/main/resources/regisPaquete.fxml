@@ -33,7 +33,7 @@
 <!--         Segunda columna -->
         <GridPane alignment="CENTER" hgap="10.0" vgap="10.0">
             <Label fx:id="diste" text="Distancia:" GridPane.columnIndex="0" GridPane.rowIndex="0"   />
-            <TextField fx:id="txtdistancias" GridPane.columnIndex="1" GridPane.rowIndex="0" minHeight="30.0" editable="false"  />
+            <TextField fx:id="txtdistancias" GridPane.columnIndex="1" GridPane.rowIndex="0" minHeight="30.0" editable="false" ></TextField>
             <Label fx:id="type" text="Tipo de envio:" GridPane.columnIndex="0" GridPane.rowIndex="1"  />
 
             <ChoiceBox fx:id="selectCategorys" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1"  disable="true" >

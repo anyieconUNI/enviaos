@@ -18,8 +18,8 @@ public class EnvioEmail implements Notificar {
 
 
         // Se definen las credenciales de la cuenta de correo
-        final String username = "anyed.condizaq@uqvirtual.edu.co";
-        final String password = "oct1.0.0.3.4.5.6";
+        final String username = "camilinc3@gmail.com";
+        final String password = "weka jmmq cwxm mpsa";
 
 
 

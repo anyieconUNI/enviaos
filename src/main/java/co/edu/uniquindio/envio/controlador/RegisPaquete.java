@@ -5,6 +5,7 @@ import co.edu.uniquindio.envio.modelo.Persona;
 import co.edu.uniquindio.envio.modelo.enums.Ciudad;
 import co.edu.uniquindio.envio.modelo.enums.TipEstado;
 import co.edu.uniquindio.envio.modelo.enums.TipoEnvio;
+import co.edu.uniquindio.envio.utils.EnvioEmail;
 import co.edu.uniquindio.envio.utils.EnvioSms;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -154,8 +155,10 @@ public class RegisPaquete implements Parametrizable {
                     System.out.println("ESTE ES EL VALOR: " + idReceptor);
                     String mensajeRecep = "Sus paquetes llegaran Pronto, codigo de seguimiento: " + codigo + "y se encuentra en estado" + TipEstado.CREADO;
                     String mensajeEmi = "Sus paquetes serán entregados pronto a su lugar de destino, codigo de seguimiento: " + codigo + "y se encuentra en estado" + TipEstado.CREADO;
-//                    enviarMensaje(idReceptor,codigo,mensajeRecep);
-//                    enviarMensaje(idEmisor,codigo,mensajeEmi);
+                    enviarMensaje(idReceptor,codigo,mensajeRecep);
+                    enviarMensaje(idEmisor,codigo,mensajeEmi);
+                    enviarCorreo(idReceptor,codigo,mensajeRecep);
+                    enviarCorreo(idEmisor,codigo,mensajeEmi);
                     controladorPrincipal.mostrarAlerta("Envio Creado", Alert.AlertType.CONFIRMATION);
                     try {
                         controladorPrincipal.crearHistorial(codigo, idEmisor, idReceptor, listaPaquetes, tipo, ciudad, TipEstado.CREADO, fechaActual, distancia, valor);
@@ -187,7 +190,31 @@ public class RegisPaquete implements Parametrizable {
             controladorPrincipal.mostrarAlerta("No se pudo encontrar la persona con el ID proporcionado.", Alert.AlertType.WARNING);
         }
     }
+    private void enviarCorreo(String idPersona, String codigo,String mensaje) throws Exception {
+        System.out.println("ESTO ES LO QUE RECIVE PARA BUSCAR"+ idPersona);
+        Persona persona = controladorPrincipal.obtenerPersonas(idPersona);
+        if (persona != null) {
+            String email = persona.getCorreo();
+            if (email != null && !email.isBlank()) {
+                EnvioEmail envioEmail = new EnvioEmail();
+                // Podrías considerar pasar las credenciales de correo electrónico como argumentos o leerlas de alguna configuración
+                envioEmail.destinatario = email;
+                envioEmail.asunto = "Notificación de entrega de paquete";
+                envioEmail.mensaje = mensaje;
 
+                // Intentar enviar el correo electrónico
+                try {
+                    envioEmail.enviarNotificacion();
+                } catch (Exception e) {
+                    controladorPrincipal.mostrarAlerta("Error al enviar el correo electrónico: " + e.getMessage(), Alert.AlertType.ERROR);
+                }
+            } else {
+                controladorPrincipal.mostrarAlerta("El correo electrónico del usuario no está disponible.", Alert.AlertType.WARNING);
+            }
+        } else {
+            controladorPrincipal.mostrarAlerta("No se pudo encontrar la persona con el ID proporcionado.", Alert.AlertType.WARNING);
+        }
+    }
     public void facturar(ActionEvent actionEvent) throws Exception {
         enviar.setDisable(false);
         String tipos = (String) selectCategorys.getValue();

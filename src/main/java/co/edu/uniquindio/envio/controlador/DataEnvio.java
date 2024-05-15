@@ -87,13 +87,14 @@ public class DataEnvio implements Parametrizable,Initializable {
                 tablaSegui.getItems().clear();
             }
             tablaSegui.setItems(FXCollections.observableArrayList(controladorPrincipal.datos()));
-            String mensajeRecep = "Sus paquetes llegaran Pronto, codigo de seguimiento: " + code + "y se encuentra en estado" +  String.valueOf(selectestados.getValue());
-            String mensajeEmi = "Sus paquetes serán entregados pronto a su lugar de destino, codigo de seguimiento: " + code + "y se encuentra en estado" +  String.valueOf(selectestados.getValue());
+            String mensajeRecep = "Sus paquetes llegaran Pronto, codigo de seguimiento: " + code + "y se encuentra en estado: " +  String.valueOf(selectestados.getValue());
+            String mensajeEmi = "Sus paquetes serán entregados pronto a su lugar de destino, codigo de seguimiento: " + code + "y se encuentra en estado: " +  String.valueOf(selectestados.getValue());
 //                    enviarMensaje(idReceptor,code,mensajeRecep);
 //                    enviarMensaje(idEmisor,code,mensajeEmi);
             enviarCorreo(idReceptor.getText(),code,mensajeRecep);
+            enviarCorreo(idEmisor.getText(),code,mensajeEmi);
 //            enviarCorreo(idEmisor.getText(),code,mensajeEmi);
-            System.out.println("EL ID QUE RECIVE: "+idReceptor.getText());
+            System.out.println("EL ID QUE RECIBE: "+idReceptor.getText());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
