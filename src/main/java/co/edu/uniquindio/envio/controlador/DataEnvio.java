@@ -89,8 +89,8 @@ public class DataEnvio implements Parametrizable,Initializable {
             tablaSegui.setItems(FXCollections.observableArrayList(controladorPrincipal.datos()));
             String mensajeRecep = "Sus paquetes llegaran Pronto, codigo de seguimiento: " + code + "y se encuentra en estado: " +  String.valueOf(selectestados.getValue());
             String mensajeEmi = "Sus paquetes serán entregados pronto a su lugar de destino, codigo de seguimiento: " + code + "y se encuentra en estado: " +  String.valueOf(selectestados.getValue());
-//                    enviarMensaje(idReceptor,code,mensajeRecep);
-//                    enviarMensaje(idEmisor,code,mensajeEmi);
+            enviarMensaje(idReceptor.getText(),code,mensajeRecep);
+            enviarMensaje(idEmisor.getText(),code,mensajeEmi);
             enviarCorreo(idReceptor.getText(),code,mensajeRecep);
             enviarCorreo(idEmisor.getText(),code,mensajeEmi);
 //            enviarCorreo(idEmisor.getText(),code,mensajeEmi);
@@ -99,7 +99,7 @@ public class DataEnvio implements Parametrizable,Initializable {
             throw new RuntimeException(e);
         }
     }
-    private void enviarMensaje(String idPersona, String codigo, String estado,String mensaje) throws Exception {
+    private void enviarMensaje(String idPersona, String codigo,String mensaje) throws Exception {
         Persona persona = controladorPrincipal.obtenerPersonas(idPersona);
         if (persona != null) {
             String numero = persona.getNumero();
